@@ -141,6 +141,7 @@ async function selectPage(page){
 }
 function scanPreview(){
  let doc;try{doc=$('preview').contentDocument}catch(_){return}if(!doc)return;
+ ensurePreviewHighlightStyles(doc);
  ensureCollectionFromPreview();renderDynamicItems();
  const original=(allData[current]||{}).__seo||{};
  $('seoTitle').value=original.title||doc.title||'';
@@ -171,14 +172,33 @@ function scanPreview(){
  }
  $('elementList').innerHTML=renderItems(content,'Text and links',false)+renderItems(images,'Images',true)||'<div class="media-empty">No editable fields found on this page.</div>';
  $('fieldsLabel').textContent='Fields on '+($('pageTitle').textContent||'this page');
- elementItems.forEach((el,i)=>{el.style.outline='none';el.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();chooseElement(i)},true)});
+ elementItems.forEach((el,i)=>{
+  el.removeAttribute('data-siw-cms-selected');
+  el.removeAttribute('data-siw-cms-hover');
+  el.addEventListener('mouseenter',()=>el.setAttribute('data-siw-cms-hover','true'));
+  el.addEventListener('mouseleave',()=>el.removeAttribute('data-siw-cms-hover'));
+  el.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();chooseElement(i)},true);
+ });
  document.querySelectorAll('#elementList button').forEach(btn=>btn.onclick=()=>chooseElement(Number(btn.dataset.index)));
  $('elementList').querySelector('button')?.click();
 }
+function ensurePreviewHighlightStyles(doc){
+ if(doc.getElementById('siw-cms-selection-styles'))return;
+ const style=doc.createElement('style');
+ style.id='siw-cms-selection-styles';
+ style.textContent=`
+[data-siw-cms-hover="true"]{outline:2px dashed #35a8dd!important;outline-offset:4px!important;box-shadow:0 0 0 5px rgba(53,168,221,.14)!important}
+[data-siw-cms-selected="true"]{outline:3px solid #087db8!important;outline-offset:5px!important;box-shadow:0 0 0 8px rgba(8,125,184,.18)!important;position:relative}
+[data-siw-cms-selected="true"]{scroll-margin:30px}
+`;
+ doc.head.appendChild(style);
+}
 function chooseElement(index){
  selected=elementItems[index];if(!selected)return;
- elementItems.forEach(el=>el.style.outline='');
- selected.style.outline='2px solid #087db8';
+ elementItems.forEach(el=>el.removeAttribute('data-siw-cms-selected'));
+ selected.setAttribute('data-siw-cms-selected','true');
+ selected.removeAttribute('data-siw-cms-hover');
+ try{selected.scrollIntoView({behavior:'smooth',block:'center',inline:'nearest'})}catch(_){}
  document.querySelectorAll('#elementList button').forEach(b=>b.classList.toggle('active',Number(b.dataset.index)===index));
  const selector=stableSelector(selected),stored=pageEdits[selector]||{};
  const computed=selected.ownerDocument.defaultView.getComputedStyle(selected);
@@ -294,6 +314,7 @@ function ensureCollectionFromPreview(){
 function applyCollectionToPreview(){
  const collection=getCollection(),doc=$('preview').contentDocument;if(!doc||!collection.items)return;
  const config=currentDynamicConfig();if(!config)return;
+ ensurePreviewHighlightStyles(doc);
  Array.from(doc.querySelectorAll(config.item)).forEach(item=>item.remove());
  collection.items.forEach(itemData=>{
   let container=null;
@@ -325,18 +346,28 @@ function addDynamic(){
  const config=currentDynamicConfig();if(!config)return;
  const collection=ensureCollectionFromPreview(),template=collection.items[0]?collection.items[0].template:null;
  const item={title:'New '+config.singular.toLowerCase(),text:'Add description here.',image:'',alt:'',link:'#',linkText:'View',container:collection.items[0]?.container||'',template:template||''};
- collection.items.push(item);pageEdits.__collection=collection;selectedDynamic=collection.items.length-1;renderDynamicItems();editDynamic(selectedDynamic);applyCollectionToPreview();notify(config.singular+' added. Save changes to publish.');
+ collection.items.push(item);pageEdits.__collection=collection;selectedDynamic=collection.items.length-1;renderDynamicItems();applyCollectionToPreview();highlightDynamicPreview(selectedDynamic);editDynamic(selectedDynamic);notify(config.singular+' added. Save changes to publish.');
 }
 function editDynamic(index){
  const collection=getCollection(),item=collection.items[index];if(!item)return;
  selectedDynamic=index;$('dynamicEditor').classList.add('active');$('dynamicEditorTitle').textContent='Edit '+(dynamicConfig[current]?.singular||'item');
  $('dynamicTitleField').value=item.title||'';$('dynamicTextField').value=item.text||'';$('dynamicImageField').value=item.image||'';$('dynamicAltField').value=item.alt||'';$('dynamicLinkField').value=item.link||'';$('dynamicLinkTextField').value=item.linkText||'';
  renderDynamicItems();
+ highlightDynamicPreview(index);
+}
+function highlightDynamicPreview(index){
+ const collection=getCollection(),doc=$('preview').contentDocument;if(!doc||!collection.items)return;
+ const config=currentDynamicConfig();if(!config)return;
+ ensurePreviewHighlightStyles(doc);
+ Array.from(doc.querySelectorAll(config.item)).forEach(item=>item.removeAttribute('data-siw-cms-selected'));
+ const cards=Array.from(doc.querySelectorAll(config.item));
+ const card=cards[index];
+ if(card){card.setAttribute('data-siw-cms-selected','true');try{card.scrollIntoView({behavior:'smooth',block:'center'})}catch(_){}}
 }
 function saveDynamic(){
  const collection=getCollection();if(selectedDynamic===null||!collection.items[selectedDynamic])return notify('Select or add an item first');
  Object.assign(collection.items[selectedDynamic],{title:$('dynamicTitleField').value,text:$('dynamicTextField').value,image:$('dynamicImageField').value,alt:$('dynamicAltField').value,link:$('dynamicLinkField').value,linkText:$('dynamicLinkTextField').value});
- pageEdits.__collection=collection;renderDynamicItems();applyCollectionToPreview();notify('Item updated. Save changes to publish.');
+ pageEdits.__collection=collection;renderDynamicItems();applyCollectionToPreview();highlightDynamicPreview(selectedDynamic);notify('Item updated. Save changes to publish.');
 }
 function deleteDynamic(index){
  if(!confirm('Delete this item permanently from the page?'))return;
@@ -344,7 +375,7 @@ function deleteDynamic(index){
 }
 function moveDynamic(index,offset){
  const collection=getCollection(),target=index+offset;if(target<0||target>=collection.items.length)return;
- const item=collection.items.splice(index,1)[0];collection.items.splice(target,0,item);pageEdits.__collection=collection;selectedDynamic=target;renderDynamicItems();applyCollectionToPreview();notify('Item order changed. Save changes to publish.');
+ const item=collection.items.splice(index,1)[0];collection.items.splice(target,0,item);pageEdits.__collection=collection;selectedDynamic=target;renderDynamicItems();applyCollectionToPreview();highlightDynamicPreview(target);notify('Item order changed. Save changes to publish.');
 }
 function deleteFieldEdit(){
  if(!selected)return notify('Select a field first');

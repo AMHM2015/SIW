@@ -1,0 +1,3665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Our Services | Sinsina Industrial Works
+</title>
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#f4f7f9;
+
+    color:#102d46;
+
+    overflow-x:hidden;
+
+}
+
+img{
+    display:block;
+    max-width:100%;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.container{
+
+    width:
+        min(1180px, calc(100% - 60px));
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.site-header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:82px;
+    z-index:1000;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(16,45,70,.08);
+    box-shadow:0 6px 24px rgba(16,45,70,.05);
+}
+
+.nav{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+}
+
+.brand img{
+    width:155px;
+    height:60px;
+    object-fit:contain;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:27px;
+}
+
+.nav-links > a,
+.nav-dropdown-btn{
+    border:0;
+    background:none;
+    color:#102d46;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.nav-links > a:hover,
+.nav-dropdown-btn:hover{
+    color:#1689bd;
+}
+
+.nav-dropdown{
+    position:relative;
+}
+
+.nav-dropdown-btn{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.nav-dropdown-menu{
+    position:absolute;
+    top:calc(100% + 20px);
+    left:50%;
+    transform:translateX(-50%) translateY(8px);
+    width:210px;
+    padding:10px;
+    background:white;
+    border:1px solid #e1e8ed;
+    box-shadow:0 20px 50px rgba(16,45,70,.12);
+    opacity:0;
+    visibility:hidden;
+    transition:.25s ease;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-menu a{
+    display:block;
+    padding:12px 14px;
+    color:#506674;
+    font-size:12px;
+    transition:.2s ease;
+}
+
+.nav-dropdown-menu a:hover{
+    color:#1689bd;
+    background:#f2f7fa;
+}
+
+.nav-contact{
+    padding:11px 18px;
+    border:1px solid #b8cbd6;
+}
+
+.menu-button{
+    display:none;
+    width:40px;
+    height:40px;
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+}
+
+.menu-button span{
+    width:23px;
+    height:2px;
+    background:#102d46;
+}
+
+.preview{
+    padding-top:140px;
+    text-align:center;
+    color:#7a8d98;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+    .menu-button{
+        display:flex;
+    }
+
+    .nav-links{
+        position:fixed;
+        top:82px;
+        left:0;
+        right:0;
+        display:none;
+        flex-direction:column;
+        align-items:stretch;
+        gap:0;
+        padding:15px 18px 25px;
+        background:#fff;
+        box-shadow:0 20px 35px rgba(7,27,43,.12);
+    }
+
+    .nav-links.open{
+        display:flex;
+    }
+
+    .nav-links > a,
+    .nav-dropdown-btn{
+        width:100%;
+        padding:14px 5px;
+        text-align:left;
+    }
+
+    .nav-dropdown-menu{
+        position:static;
+        display:none;
+        width:100%;
+        opacity:1;
+        visibility:visible;
+        transform:none;
+        box-shadow:none;
+        border:0;
+        padding:0 0 0 12px;
+    }
+
+    .nav-dropdown.mobile-open .nav-dropdown-menu{
+        display:block;
+    }
+}
+/* =====================================================
+   HERO
+===================================================== */
+
+.services-page{
+
+    padding-top:82px;
+
+}
+
+
+.services-hero{
+
+    position:relative;
+
+    min-height:650px;
+
+    display:flex;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    background:#102d46;
+
+}
+
+
+.services-hero-image{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:.48;
+
+    filter:
+        saturate(.8);
+
+}
+
+
+.services-hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,29,45,.97) 0%,
+            rgba(8,29,45,.82) 40%,
+            rgba(8,29,45,.25) 100%
+        );
+
+}
+
+
+.hero-content{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:850px;
+
+}
+
+
+.kicker{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:22px;
+
+    margin-bottom:22px;
+
+    color:#55b9e7;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:2.5px;
+
+   
+
+}
+
+
+.kicker::before{
+
+    content:"";
+
+  
+
+    background:#39a8dc;
+
+}
+
+
+.hero-content h1{
+
+    max-width:900px;
+
+    color:white;
+
+    font-size:
+        clamp(58px, 8vw, 108px);
+
+    line-height:.88;
+
+    letter-spacing:-6px;
+
+    font-weight:800;
+
+}
+
+
+.hero-content h1 span{
+
+    color:#55b9e7;
+
+}
+
+
+.hero-content p{
+
+    max-width:560px;
+
+    margin-top:30px;
+
+    color:
+        rgba(255,255,255,.68);
+
+    font-size:14px;
+
+    line-height:1.9;
+
+}
+
+
+.hero-link{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:35px;
+
+    padding:
+        14px 18px;
+
+    color:white;
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+    font-size:9px;
+
+    font-weight:700;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    transition:.3s ease;
+
+}
+
+
+.hero-link:hover{
+
+    background:#1689bd;
+
+    border-color:#1689bd;
+
+}
+
+
+/* =====================================================
+   FLOATING PROCESS BAR
+===================================================== */
+
+.service-flow{
+
+    position:absolute;
+
+    right:0;
+
+    bottom:0;
+
+    z-index:3;
+
+    width:48%;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    background:
+        rgba(8,29,45,.86);
+
+    backdrop-filter:
+        blur(12px);
+
+}
+
+
+.flow-item{
+
+    min-height:105px;
+
+    padding:18px 15px;
+
+    border-left:
+        1px solid
+        rgba(255,255,255,.1);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+}
+
+
+.flow-number{
+
+    color:#55b9e7;
+
+    font-size:9px;
+
+    font-weight:700;
+
+}
+
+
+.flow-item span{
+
+    color:
+        rgba(255,255,255,.7);
+
+    font-size:8px;
+
+    line-height:1.4;
+
+    text-transform:uppercase;
+
+    letter-spacing:.8px;
+
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+.services-intro{
+
+    padding:
+        120px 0 100px;
+
+    background:#fff;
+
+}
+
+
+.intro-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:100px;
+
+    align-items:end;
+
+}
+
+
+.intro-grid h2{
+
+    max-width:600px;
+
+    font-size:
+        clamp(40px,5vw,68px);
+
+    line-height:.95;
+
+    letter-spacing:-4px;
+
+    font-weight:800;
+
+}
+
+
+.intro-grid h2 span{
+
+    color:#1689bd;
+
+}
+
+
+.intro-text{
+
+    color:#6e808b;
+
+    font-size:13px;
+
+    line-height:1.95;
+
+    max-width:480px;
+
+}
+
+
+/* =====================================================
+   SERVICES
+===================================================== */
+
+.services-section{
+
+    padding:
+        50px 0 140px;
+
+    background:#fff;
+
+}
+
+
+.service-card{
+
+    display:grid;
+
+    grid-template-columns:
+        40% 60%;
+
+    min-height:500px;
+
+    margin-bottom:20px;
+
+    overflow:hidden;
+
+    background:#eef3f6;
+
+}
+
+
+.service-card:nth-child(even){
+
+    grid-template-columns:
+        60% 40%;
+
+}
+
+
+.service-image{
+
+    position:relative;
+
+    min-height:500px;
+
+    overflow:hidden;
+
+}
+
+
+.service-card:nth-child(even)
+.service-image{
+
+    order:2;
+
+}
+
+
+.service-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:
+        transform
+        1s
+        cubic-bezier(.2,.7,.2,1);
+
+}
+
+
+.service-card:hover
+.service-image img{
+
+    transform:scale(1.07);
+
+}
+
+
+.service-image::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16,45,70,.18),
+            transparent 60%
+        );
+
+}
+
+
+.service-content{
+
+    position:relative;
+
+    padding:
+        55px 65px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+
+.service-content::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:3px;
+
+    height:0;
+
+    background:#1689bd;
+
+    transition:
+        height .7s ease;
+
+}
+
+
+.service-card:hover
+.service-content::before{
+
+    height:100%;
+
+}
+
+
+.service-number{
+
+    position:absolute;
+
+    top:35px;
+
+    right:45px;
+
+    color:
+        rgba(16,45,70,.07);
+
+    font-size:100px;
+
+    line-height:.8;
+
+    font-weight:900;
+
+}
+
+
+.service-tag{
+
+    margin-bottom:18px;
+
+    color:#1689bd;
+
+    font-size:9px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+}
+
+
+.service-content h3{
+
+    max-width:560px;
+
+    font-size:
+        clamp(34px,4vw,58px);
+
+    line-height:.95;
+
+    letter-spacing:-3px;
+
+}
+
+
+.service-content p{
+
+    max-width:530px;
+
+    margin-top:20px;
+
+    color:#687b87;
+
+    font-size:13px;
+
+    line-height:1.85;
+
+}
+
+
+.service-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:
+        11px 30px;
+
+    max-width:500px;
+
+    margin-top:30px;
+
+}
+
+
+.service-list li{
+
+    list-style:none;
+
+    color:#526976;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+    padding-left:17px;
+
+    position:relative;
+
+}
+
+
+.service-list li::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:6px;
+
+    width:6px;
+
+    height:6px;
+
+    background:#35a8dd;
+
+}
+
+
+/* =====================================================
+   ENGINEERING JOURNEY
+===================================================== */
+
+.journey{
+
+    padding:
+        130px 0;
+
+    background:#f4f7f9;
+
+}
+
+
+.journey-header{
+
+    display:flex;
+
+    align-items:end;
+
+    justify-content:space-between;
+
+    margin-bottom:70px;
+
+}
+
+
+.journey-header h2{
+
+    max-width:650px;
+
+    font-size:
+        clamp(40px,5vw,68px);
+
+    line-height:.95;
+
+    letter-spacing:-4px;
+
+}
+
+
+.journey-header h2 span{
+
+    color:#1689bd;
+
+}
+
+
+.journey-header p{
+
+    max-width:350px;
+
+    color:#71838e;
+
+    font-size:12px;
+
+    line-height:1.8;
+
+}
+
+
+.journey-line{
+
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+}
+
+
+.journey-line::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:16px;
+
+    left:0;
+
+    right:0;
+
+    height:1px;
+
+    background:#cbd9e0;
+
+}
+
+
+.journey-step{
+
+    position:relative;
+
+    padding-right:25px;
+
+}
+
+
+.journey-dot{
+
+    position:relative;
+
+    z-index:2;
+
+    width:33px;
+
+    height:33px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:25px;
+
+    color:white;
+
+    background:#1689bd;
+
+    border:
+        5px solid
+        #f4f7f9;
+
+    font-size:8px;
+
+    font-weight:700;
+
+}
+
+
+.journey-step h4{
+
+    margin-bottom:10px;
+
+    color:#102d46;
+
+    font-size:13px;
+
+    font-weight:800;
+
+}
+
+
+.journey-step p{
+
+    max-width:170px;
+
+    color:#788a94;
+
+    font-size:10px;
+
+    line-height:1.7;
+
+}
+
+
+/* =====================================================
+   INDUSTRIES
+===================================================== */
+
+.industries{
+
+    padding:
+        120px 0;
+
+    background:#102d46;
+
+    color:white;
+
+}
+
+
+.industries-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        .9fr 1.1fr;
+
+    gap:100px;
+
+    align-items:center;
+
+}
+
+
+.industries h2{
+
+    font-size:
+        clamp(45px,5vw,72px);
+
+    line-height:.92;
+
+    letter-spacing:-4px;
+
+}
+
+
+.industries h2 span{
+
+    color:#55b9e7;
+
+}
+
+
+.industries-description{
+
+    margin-top:25px;
+
+    max-width:430px;
+
+    color:
+        rgba(255,255,255,.58);
+
+    font-size:12px;
+
+    line-height:1.9;
+
+}
+
+
+.industry-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+}
+
+
+.industry{
+
+    min-height:190px;
+
+    padding:28px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    transition:.35s ease;
+
+}
+
+
+.industry:hover{
+
+    background:
+        rgba(85,185,231,.08);
+
+    transform:
+        translateY(-7px);
+
+}
+
+
+.industry-icon{
+
+    width:35px;
+
+    height:35px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#55b9e7;
+
+    border:
+        1px solid
+        rgba(85,185,231,.4);
+
+    font-size:12px;
+
+}
+
+
+.industry h4{
+
+    font-size:14px;
+
+}
+
+
+/* =====================================================
+   DIFFERENCE
+===================================================== */
+
+.difference{
+
+    padding:
+        130px 0;
+
+    background:white;
+
+}
+
+
+.difference-header{
+
+    max-width:700px;
+
+    margin-bottom:65px;
+
+}
+
+
+.difference-header h2{
+
+    font-size:
+        clamp(45px,6vw,78px);
+
+    line-height:.92;
+
+    letter-spacing:-5px;
+
+}
+
+
+.difference-header h2 span{
+
+    color:#1689bd;
+
+}
+
+
+.difference-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:1px;
+
+    background:#dce5ea;
+
+}
+
+
+.difference-card{
+
+    min-height:250px;
+
+    padding:35px;
+
+    background:white;
+
+    transition:.35s ease;
+
+}
+
+
+.difference-card:hover{
+
+    background:#f4f8fa;
+
+    transform:
+        translateY(-5px);
+
+}
+
+
+.difference-icon{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:35px;
+
+    color:#1689bd;
+
+    background:#edf6fa;
+
+    font-size:14px;
+
+}
+
+
+.difference-card h3{
+
+    margin-bottom:13px;
+
+    font-size:17px;
+
+}
+
+
+.difference-card p{
+
+    color:#71838e;
+
+    font-size:11px;
+
+    line-height:1.8;
+
+}
+
+
+/* =====================================================
+   PROMISE
+===================================================== */
+
+.promise{
+
+    position:relative;
+
+    padding:
+        130px 0;
+
+    overflow:hidden;
+
+    background:#eef3f6;
+
+}
+
+
+.promise-content{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:850px;
+
+}
+
+
+.promise h2{
+
+    font-size:
+        clamp(42px,6vw,82px);
+
+    line-height:.92;
+
+    letter-spacing:-5px;
+
+}
+
+
+.promise h2 span{
+
+    color:#1689bd;
+
+}
+
+
+.promise-quote{
+
+    max-width:700px;
+
+    margin-top:30px;
+
+    color:#637783;
+
+    font-size:14px;
+
+    line-height:1.9;
+
+}
+
+
+.promise-statement{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:1px;
+
+    margin-top:55px;
+
+    background:#d5e0e6;
+
+}
+
+
+.statement{
+
+    padding:25px;
+
+    background:#f4f7f9;
+
+}
+
+
+.statement strong{
+
+    display:block;
+
+    color:#102d46;
+
+    font-size:15px;
+
+}
+
+
+.statement span{
+
+    display:block;
+
+    margin-top:7px;
+
+    color:#1689bd;
+
+    font-size:8px;
+
+    font-weight:700;
+
+    letter-spacing:1.3px;
+
+}
+
+
+/* =====================================================
+   CTA
+===================================================== */
+
+.services-cta{
+
+    padding:
+        110px 0;
+
+    background:#081d2d;
+
+    color:white;
+
+}
+
+
+.cta-inner{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:50px;
+
+}
+
+
+.cta-inner h2{
+
+    max-width:700px;
+
+    font-size:
+        clamp(38px,5vw,68px);
+
+    line-height:.95;
+
+    letter-spacing:-4px;
+
+}
+
+
+.cta-inner h2 span{
+
+    color:#55b9e7;
+
+}
+
+
+.cta-button{
+
+    flex-shrink:0;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:
+        18px 22px;
+
+    background:#1689bd;
+
+    color:white;
+
+    font-size:9px;
+
+    font-weight:700;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    transition:.3s ease;
+
+}
+
+
+.cta-button:hover{
+
+    background:#35a8dd;
+
+    transform:translateX(5px);
+
+}
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .site-footer {
+            width: 100%;
+
+            padding:
+                65px 0 35px;
+
+            background:
+                #081d2d;
+
+            color: white;
+        }
+
+
+        .footer-top {
+            display: grid;
+
+            grid-template-columns:
+                1.4fr 1fr 1fr;
+
+            gap: 70px;
+
+            padding-bottom: 55px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.1);
+        }
+
+
+        .footer-brand img {
+            width: 150px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .footer-brand p {
+            max-width: 350px;
+
+            color:
+                rgba(255,255,255,.5);
+
+            font-size: 11px;
+
+            line-height: 1.9;
+        }
+
+
+        .footer-column h4 {
+            margin-bottom: 20px;
+
+            color: white;
+
+            font-size: 10px;
+
+            letter-spacing: 1.8px;
+
+            text-transform: uppercase;
+        }
+
+
+        .footer-column a {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color:
+                rgba(255,255,255,.5);
+
+            font-size: 11px;
+
+            transition:
+                color .2s ease;
+        }
+
+
+        .footer-column a:hover {
+            color:
+                #55b9e7;
+        }
+
+
+        /* FOOTER SOCIALS */
+
+        .footer-socials {
+            display: flex;
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+
+        .footer-social {
+            width: 31px;
+            height: 31px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,.18);
+
+            border-radius: 50%;
+
+            color:
+                rgba(255,255,255,.65);
+
+            font-size: 9px;
+            font-weight: 800;
+
+            transition:
+                .25s ease;
+        }
+
+
+        .footer-social:hover {
+            color: white;
+
+            background:
+                var(--blue);
+
+            border-color:
+                var(--blue);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .footer-bottom {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding-top: 25px;
+
+            color:
+                rgba(255,255,255,.3);
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+
+
+/* =====================================================
+   REVEAL ANIMATION
+===================================================== */
+
+.reveal{
+
+    animation:
+        revealIn
+        .9s
+        ease
+        both;
+
+}
+
+
+@keyframes revealIn{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(35px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px){
+
+    .container{
+
+        width:
+            min(
+                100% - 35px,
+                700px
+            );
+
+    }
+
+
+    .nav-links{
+
+        display:none;
+
+    }
+
+
+    .services-hero{
+
+        min-height:650px;
+
+    }
+
+
+    .service-flow{
+
+        position:relative;
+
+        width:100%;
+
+        margin-top:100px;
+
+    }
+
+
+    .services-hero{
+
+        align-items:flex-start;
+
+        padding-top:100px;
+
+    }
+
+
+    .intro-grid,
+    .industries-grid{
+
+        grid-template-columns:
+            1fr;
+
+        gap:45px;
+
+    }
+
+
+    .service-card,
+    .service-card:nth-child(even){
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .service-image,
+    .service-card:nth-child(even)
+    .service-image{
+
+        order:0;
+
+        min-height:400px;
+
+    }
+
+
+    .service-content{
+
+        min-height:450px;
+
+        padding:45px 30px;
+
+    }
+
+
+    .journey-line{
+
+        grid-template-columns:
+            1fr;
+
+        gap:35px;
+
+    }
+
+
+    .journey-line::before{
+
+        top:0;
+        bottom:0;
+
+        left:16px;
+
+        width:1px;
+
+        height:100%;
+
+    }
+
+
+    .journey-step{
+
+        padding-left:55px;
+
+    }
+
+
+    .journey-dot{
+
+        position:absolute;
+
+        left:0;
+
+        top:0;
+
+    }
+
+
+    .industry-list{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .difference-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cta-inner{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+    .footer-top{
+
+        grid-template-columns:
+            1fr;
+
+        gap:35px;
+
+    }
+
+
+    .footer-bottom{
+
+        flex-direction:column;
+
+        gap:10px;
+
+    }
+
+}
+
+
+@media(max-width:550px){
+
+    .services-hero{
+
+        min-height:720px;
+
+    }
+
+
+    .hero-content h1{
+
+        font-size:55px;
+
+        letter-spacing:-3px;
+
+    }
+
+
+    .service-flow{
+
+        grid-template-columns:
+            repeat(5,1fr);
+
+        overflow-x:auto;
+
+    }
+
+
+    .flow-item{
+
+        min-width:90px;
+
+    }
+
+
+    .service-list{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .promise-statement{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
+
+
+<style>
+/* =========================================================
+   SERVICES — CREATIVE P&ID / PROCESS ROUTE REDESIGN
+   Keeps your existing content, changes presentation language
+   ========================================================= */
+
+:root{
+  --s-navy:#071b2b;
+  --s-navy2:#102d46;
+  --s-blue:#087db8;
+  --s-cyan:#35a8dd;
+  --s-ice:#eef3f6;
+  --s-white:#fff;
+  --s-text:#6d7f89;
+  --s-line:rgba(7,27,43,.10);
+}
+
+/* overall */
+body{
+  font-family:"Inter",Arial,Helvetica,sans-serif !important;
+  background:#edf3f6 !important;
+}
+
+.services-page{
+  padding-top:82px !important;
+}
+
+/* ---------- HERO ---------- */
+.services-hero{
+  min-height:590px !important;
+  background:#071b2b !important;
+  isolation:isolate;
+}
+
+.services-hero-image{
+  opacity:.34 !important;
+  filter:saturate(.72) contrast(1.03) !important;
+}
+
+.services-hero::after{
+  background:
+    linear-gradient(90deg,rgba(7,27,43,.99) 0%,rgba(7,27,43,.93) 42%,rgba(7,27,43,.42) 100%),
+    linear-gradient(0deg,rgba(7,27,43,.88),transparent 55%) !important;
+}
+
+.services-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background-image:
+    linear-gradient(rgba(53,168,221,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(53,168,221,.10) 1px,transparent 1px);
+  background-size:58px 58px;
+  opacity:.48;
+  mask-image:linear-gradient(90deg,black,transparent 85%);
+  pointer-events:none;
+}
+
+.hero-content{
+  max-width:720px !important;
+}
+
+.hero-content::before{
+  content:"PROCESS / INTEGRATION / EXECUTION";
+  display:block;
+  margin-bottom:18px;
+  color:#6bcef3;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:2.5px;
+}
+
+.kicker{
+  margin-bottom:18px !important;
+  gap:14px !important;
+}
+
+.kicker h1{
+  color:#6bcef3 !important;
+  font-size:10px !important;
+  letter-spacing:2.5px !important;
+  text-transform:uppercase;
+}
+
+.hero-content > h1{
+  display:none !important;
+}
+
+.hero-content p{
+  max-width:520px !important;
+  margin-top:24px !important;
+  font-size:13.5px !important;
+  line-height:1.85 !important;
+}
+
+.hero-link{
+  margin-top:28px !important;
+  padding:12px 16px !important;
+  font-size:9px !important;
+  border-color:rgba(255,255,255,.22) !important;
+}
+
+.hero-link:hover{
+  background:#1689bd !important;
+  border-color:#1689bd !important;
+}
+
+/* headline injected */
+.services-creative-title{
+  max-width:820px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(56px,7vw,92px);
+  line-height:.88;
+  letter-spacing:-5px;
+  font-weight:800;
+}
+.services-creative-title span{
+  color:#55bce9;
+}
+
+/* schematic on right */
+.services-schematic{
+  position:absolute;
+  z-index:3;
+  right:5%;
+  top:50%;
+  width:370px;
+  height:210px;
+  transform:translateY(-55%);
+  opacity:.62;
+  pointer-events:none;
+}
+
+.services-schematic .pipe{
+  position:absolute;
+  border:1px solid rgba(95,202,243,.34);
+}
+
+.services-schematic .p1{
+  left:0;top:70px;width:155px;height:72px;
+  border-left:0;
+  border-radius:0 18px 18px 0;
+}
+.services-schematic .p2{
+  left:155px;top:33px;width:95px;height:109px;
+  border-bottom:0;
+  border-radius:18px 18px 0 0;
+}
+.services-schematic .p3{
+  left:249px;top:33px;width:120px;height:58px;
+  border-left:0;
+  border-radius:0 16px 16px 0;
+}
+.services-schematic .valve{
+  position:absolute;
+  width:20px;height:20px;
+  border:1px solid rgba(95,202,243,.48);
+  transform:rotate(45deg);
+  background:rgba(7,27,43,.55);
+}
+.services-schematic .v1{left:80px;top:96px}
+.services-schematic .v2{left:212px;top:88px}
+.services-schematic .v3{left:303px;top:52px}
+.services-schematic .node{
+  position:absolute;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:#58c1eb;
+  box-shadow:0 0 0 5px rgba(88,193,235,.10);
+}
+.services-schematic .n1{left:0;top:104px}
+.services-schematic .n2{left:151px;top:104px}
+.services-schematic .n3{left:246px;top:55px}
+.services-schematic .label{
+  position:absolute;
+  color:rgba(255,255,255,.42);
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:1.4px;
+}
+.services-schematic .l1{left:18px;top:150px}
+.services-schematic .l2{left:170px;top:8px}
+.services-schematic .l3{right:2px;top:98px}
+
+/* ---------- PROCESS BAR BECOMES P&ID ROUTE ---------- */
+.service-flow{
+  position:absolute !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:0 !important;
+  width:min(1120px,calc(100% - 60px)) !important;
+  transform:translateX(-50%) !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,1fr) !important;
+  background:rgba(7,27,43,.88) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-bottom:0 !important;
+  backdrop-filter:blur(14px) !important;
+  overflow:visible !important;
+}
+
+.service-flow::before{
+  content:"";
+  position:absolute;
+  left:7%;
+  right:7%;
+  top:34px;
+  height:1px;
+  background:linear-gradient(90deg,rgba(53,168,221,.20),rgba(53,168,221,.72),rgba(53,168,221,.20));
+  z-index:0;
+}
+
+.flow-item{
+  position:relative;
+  z-index:2;
+  min-height:92px !important;
+  padding:20px 16px 16px !important;
+  justify-content:flex-end !important;
+  gap:12px;
+  background:transparent;
+  transition:.25s ease;
+}
+
+.flow-item::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:28px;
+  width:11px;
+  height:11px;
+  border:1px solid #5dc5ef;
+  background:#071b2b;
+  transform:translateX(-50%) rotate(45deg);
+  box-shadow:0 0 0 5px rgba(53,168,221,.06);
+}
+
+.flow-item:hover{
+  background:rgba(53,168,221,.08);
+}
+
+.flow-number{
+  position:absolute;
+  top:10px;
+  left:12px;
+  font-size:7px !important;
+  color:rgba(255,255,255,.35) !important;
+}
+
+.flow-item span{
+  font-size:8px !important;
+  text-align:center;
+  color:rgba(255,255,255,.75) !important;
+  letter-spacing:1px !important;
+}
+
+/* ---------- INTRO ---------- */
+.services-intro{
+  padding:92px 0 78px !important;
+  background:#fff !important;
+}
+
+.intro-grid{
+  gap:70px !important;
+}
+
+.intro-grid h2{
+  font-size:clamp(38px,4.5vw,58px) !important;
+  line-height:.98 !important;
+  letter-spacing:-3px !important;
+}
+
+.intro-text{
+  font-size:12.5px !important;
+  line-height:1.8 !important;
+}
+
+/* ---------- SERVICES AS CONNECTED MODULES ---------- */
+.services-section{
+  position:relative;
+  padding:78px 0 100px !important;
+  background:
+    linear-gradient(180deg,#edf3f6 0%,#f8fafb 48%,#edf3f6 100%) !important;
+}
+
+/* vertical process spine */
+.services-section > .container{
+  position:relative;
+}
+.services-section > .container::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:10px;
+  bottom:10px;
+  width:1px;
+  background:
+    linear-gradient(180deg,rgba(53,168,221,.0),rgba(53,168,221,.28) 12%,rgba(53,168,221,.28) 88%,rgba(53,168,221,0));
+  transform:translateX(-50%);
+}
+
+.service-card{
+  position:relative !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  min-height:430px !important;
+  margin-bottom:44px !important;
+  overflow:hidden !important;
+  background:#fff !important;
+  border:1px solid rgba(7,27,43,.08) !important;
+  box-shadow:0 14px 42px rgba(7,27,43,.065) !important;
+  transition:.35s ease !important;
+}
+
+.service-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 24px 65px rgba(7,27,43,.12) !important;
+  border-color:rgba(53,168,221,.22) !important;
+}
+
+.service-card:nth-child(even) .service-image{order:2}
+.service-card:nth-child(even) .service-content{order:1}
+
+/* process connection node */
+.service-card::before{
+  content:"";
+  position:absolute;
+  z-index:6;
+  left:50%;
+  top:50%;
+  width:16px;
+  height:16px;
+  border:2px solid #4cb9e7;
+  background:#edf3f6;
+  transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 0 8px rgba(53,168,221,.08);
+}
+
+.service-image{
+  min-height:430px !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+
+.service-image img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  transition:transform .65s ease !important;
+}
+.service-card:hover .service-image img{transform:scale(1.04)}
+
+.service-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,transparent 65%,rgba(7,27,43,.56)),
+    linear-gradient(90deg,rgba(7,27,43,.09),transparent 50%);
+}
+
+.service-content{
+  min-height:430px !important;
+  padding:46px 46px 40px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  position:relative !important;
+  overflow:hidden;
+}
+
+.service-content::after{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:72px;
+  height:42px;
+  background:
+    linear-gradient(90deg,rgba(8,125,184,.24) 1px,transparent 1px),
+    linear-gradient(rgba(8,125,184,.24) 1px,transparent 1px);
+  background-size:12px 12px;
+  opacity:.42;
+}
+
+.service-number{
+  color:#1689bd !important;
+  font-size:9px !important;
+  letter-spacing:1.8px !important;
+}
+
+.service-tag{
+  margin-top:12px !important;
+  color:#7a909d !important;
+  font-size:8px !important;
+  letter-spacing:1.8px !important;
+}
+
+.service-content h3{
+  margin-top:16px !important;
+  font-size:clamp(36px,4vw,54px) !important;
+  line-height:.95 !important;
+  letter-spacing:-3px !important;
+  color:#102d46 !important;
+}
+
+.service-content p{
+  margin-top:20px !important;
+  font-size:12px !important;
+  line-height:1.75 !important;
+  color:#6d7f89 !important;
+}
+
+.service-list{
+  margin-top:22px !important;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 18px;
+  padding:0 !important;
+  list-style:none !important;
+}
+
+.service-list li{
+  position:relative;
+  padding-left:16px;
+  font-size:10px !important;
+  line-height:1.5 !important;
+  color:#49616f !important;
+}
+
+.service-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.62em;
+  width:7px;
+  height:1px;
+  background:#35a8dd;
+}
+
+/* ---------- REVEAL ---------- */
+.service-card{
+  opacity:0;
+  transform:translateY(28px);
+}
+.service-card.is-visible{
+  opacity:1;
+  transform:none;
+  transition:
+    opacity .65s ease,
+    transform .7s cubic-bezier(.2,.7,.2,1),
+    box-shadow .35s ease,
+    border-color .35s ease !important;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1000px){
+  .services-schematic{
+    width:300px;
+    transform:translateY(-55%) scale(.85);
+    transform-origin:right center;
+    opacity:.45;
+  }
+
+  .service-content{
+    padding:38px 34px 34px !important;
+  }
+}
+
+@media(max-width:780px){
+  .services-hero{
+    min-height:560px !important;
+  }
+
+  .services-schematic{display:none}
+
+  .services-creative-title{
+    font-size:clamp(50px,14vw,72px);
+    letter-spacing:-3px;
+  }
+
+  .service-flow{
+    position:relative !important;
+    left:auto !important;
+    bottom:auto !important;
+    width:100% !important;
+    transform:none !important;
+    grid-template-columns:1fr !important;
+  }
+
+  .service-flow::before{display:none}
+
+  .flow-item{
+    min-height:52px !important;
+    padding:12px 16px 12px 44px !important;
+    justify-content:center !important;
+    align-items:flex-start !important;
+  }
+
+  .flow-item::before{
+    left:18px;
+    top:50%;
+    transform:translateY(-50%) rotate(45deg);
+  }
+
+  .flow-number{
+    display:none !important;
+  }
+
+  .flow-item span{
+    text-align:left;
+  }
+
+  .services-section > .container::before{display:none}
+
+  .service-card,
+  .service-card:nth-child(even){
+    grid-template-columns:1fr !important;
+  }
+
+  .service-card:nth-child(even) .service-image,
+  .service-card:nth-child(even) .service-content{
+    order:initial;
+  }
+
+  .service-card::before{display:none}
+
+  .service-image{
+    min-height:280px !important;
+  }
+
+  .service-content{
+    min-height:auto !important;
+    padding:34px 24px 36px !important;
+  }
+
+  .service-content h3{
+    font-size:38px !important;
+    letter-spacing:-2px !important;
+  }
+
+  .service-list{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+
+<style>
+/* =========================================================
+   SERVICES V2 — HERO + INDUSTRY FIX
+   ========================================================= */
+
+/* neutralize previous hero/process implementation */
+.services-hero-v2::before,.services-hero-v2::after{display:none !important}
+.services-hero-v2{
+  position:relative !important;
+  min-height:520px !important;
+  display:grid !important;
+  grid-template-columns:55% 45% !important;
+  background:#071b2b !important;
+  overflow:hidden !important;
+}
+.hero-v2-left{display:flex;align-items:center;position:relative;z-index:3}
+.hero-v2-left::after{
+  content:"";position:absolute;right:-72px;top:0;width:145px;height:100%;
+  background:#071b2b;transform:skewX(-8deg);z-index:-1;
+}
+.hero-v2-inner{width:min(650px,calc(100% - 70px));margin-left:max(30px,calc((100vw - 1180px)/2));padding:60px 0 54px}
+.hero-v2-kicker{display:flex;align-items:center;gap:12px;color:#64c9ef;font-size:9px;font-weight:800;letter-spacing:2.4px;margin-bottom:20px}
+.hero-v2-kicker::before{content:"";width:28px;height:1px;background:#64c9ef}
+.hero-v2-inner h1{margin:0;color:#fff;font-size:clamp(58px,6.2vw,88px);line-height:.9;letter-spacing:-5px;font-weight:800}
+.hero-v2-inner h1 span{color:#53bce9}
+.hero-v2-inner p{max-width:510px;margin:25px 0 0;color:rgba(255,255,255,.66);font-size:13px;line-height:1.8}
+.hero-v2-link{display:inline-flex;align-items:center;gap:16px;margin-top:28px;padding:12px 15px;border:1px solid rgba(255,255,255,.24);color:#fff;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;transition:.25s ease}
+.hero-v2-link:hover{background:#1689bd;border-color:#1689bd;transform:translateY(-2px)}
+.hero-v2-data{display:flex;gap:26px;margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,.10);max-width:520px}
+.hero-v2-data span{color:rgba(255,255,255,.38);font-size:7px;font-weight:800;letter-spacing:1.8px}
+
+.hero-v2-visual{position:relative;overflow:hidden;min-height:520px;background:#102d46}
+.hero-v2-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(1.04)}
+.hero-v2-image-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,27,43,.52),rgba(7,27,43,.05) 42%),linear-gradient(0deg,rgba(7,27,43,.64),transparent 50%)}
+.hero-v2-caption{position:absolute;right:28px;bottom:25px;color:rgba(255,255,255,.52);font-size:7px;line-height:1.8;letter-spacing:1.7px;text-align:right}
+.hero-v2-drawing{position:absolute;right:38px;top:34px;width:220px;height:125px;opacity:.75;color:#83d6f4}
+.hero-v2-drawing .pipe{position:absolute;border:1px solid rgba(104,205,243,.48)}
+.hero-v2-drawing .pipe-a{left:0;top:53px;width:118px;height:46px;border-left:0;border-radius:0 13px 13px 0}
+.hero-v2-drawing .pipe-b{left:118px;top:22px;width:100px;height:77px;border-bottom:0;border-radius:13px 13px 0 0}
+.hero-v2-drawing .valve{position:absolute;width:16px;height:16px;border:1px solid rgba(104,205,243,.7);transform:rotate(45deg)}
+.hero-v2-drawing .valve-a{left:58px;top:68px}.hero-v2-drawing .valve-b{left:164px;top:60px}
+.hero-v2-drawing b{position:absolute;right:0;bottom:0;font-size:6px;letter-spacing:1.5px;color:rgba(255,255,255,.42)}
+
+/* compact execution strip */
+.execution-strip{background:#fff;border-bottom:1px solid rgba(7,27,43,.08);box-shadow:0 10px 30px rgba(7,27,43,.035)}
+.execution-strip-inner{display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.execution-strip-inner::before{content:"";position:absolute;left:6%;right:6%;top:24px;height:1px;background:#d5e2e8}
+.execution-stage{position:relative;min-height:92px;padding:17px 15px 14px 28px;border-right:1px solid rgba(7,27,43,.07)}
+.execution-stage:last-child{border-right:0}
+.execution-stage::before{content:"";position:absolute;left:15px;top:20px;width:8px;height:8px;background:#fff;border:2px solid #35a8dd;transform:rotate(45deg);z-index:2}
+.execution-stage b{display:block;color:#35a8dd;font-size:7px;letter-spacing:1px;margin-bottom:9px}
+.execution-stage span{display:block;color:#102d46;font-size:11px;font-weight:800}
+.execution-stage small{display:block;margin-top:6px;color:#81929c;font-size:8px;line-height:1.5}
+.execution-stage:hover{background:#f6fafc}
+
+/* compact industries band */
+.industries-v2{padding:72px 0 !important;background:#0d3048 !important;color:#fff;overflow:hidden}
+.industries-v2-inner{display:grid;grid-template-columns:.68fr 1.32fr;gap:58px;align-items:center}
+.industries-v2-kicker{color:#63c7ed;font-size:8px;font-weight:800;letter-spacing:2.3px;margin-bottom:15px}
+.industries-v2-copy h2{font-size:clamp(38px,4vw,54px);line-height:.96;letter-spacing:-3px;margin:0;color:#fff}
+.industries-v2-copy h2 span{color:#55bce9}
+.industries-v2-copy p{max-width:390px;margin-top:18px;color:rgba(255,255,255,.55);font-size:11px;line-height:1.75}
+.industry-modules{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.10)}
+.industry-module{min-height:230px;padding:22px 20px 20px;position:relative;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.10);overflow:hidden;transition:.3s ease}
+.industry-module:last-child{border-right:0}
+.industry-module:hover{background:rgba(53,168,221,.08)}
+.industry-module::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#55bce9;transition:width .3s ease}.industry-module:hover::after{width:100%}
+.industry-module-copy b{display:block;color:#55bce9;font-size:7px;letter-spacing:1.3px;margin-bottom:8px}
+.industry-module-copy h3{margin:0;color:#fff;font-size:15px;letter-spacing:-.3px}.industry-module-copy p{margin:9px 0 0;color:rgba(255,255,255,.48);font-size:8px;line-height:1.6}
+.industry-graphic{position:relative;height:86px;width:100%;opacity:.78}
+/* vessel */
+.vessel-body{position:absolute;left:16%;top:20px;width:68%;height:34px;border:1px solid rgba(100,203,242,.58);border-radius:17px}
+.vessel-body::before,.vessel-body::after{content:"";position:absolute;top:7px;width:1px;height:18px;background:rgba(100,203,242,.4)}.vessel-body::before{left:20%}.vessel-body::after{right:20%}
+.vessel-leg{position:absolute;top:54px;width:1px;height:18px;background:rgba(100,203,242,.42)}.vessel-leg.l{left:34%}.vessel-leg.r{right:34%}
+.vessel-nozzle{position:absolute;left:48%;top:10px;width:12px;height:10px;border-left:1px solid rgba(100,203,242,.5);border-right:1px solid rgba(100,203,242,.5)}
+/* refinery */
+.tower{position:absolute;bottom:13px;border:1px solid rgba(100,203,242,.55);border-bottom:0}.t1{left:20%;width:16px;height:50px}.t2{left:45%;width:20px;height:66px}.t3{left:72%;width:13px;height:42px}.tower::after{content:"";position:absolute;left:3px;right:3px;top:12px;height:1px;background:rgba(100,203,242,.35);box-shadow:0 12px 0 rgba(100,203,242,.35),0 24px 0 rgba(100,203,242,.35)}
+.ref-pipe{position:absolute;border-top:1px solid rgba(100,203,242,.4);border-right:1px solid rgba(100,203,242,.4)}.ref-pipe.p1{left:28%;top:30px;width:31%;height:20px}.ref-pipe.p2{left:54%;top:49px;width:23%;height:15px}
+/* pipeline */
+.pipeline-graphic .line{position:absolute;border:1px solid rgba(100,203,242,.5)}.pipeline-graphic .line.a{left:10%;top:24px;width:45%;height:38px;border-left:0;border-radius:0 12px 12px 0}.pipeline-graphic .line.b{left:55%;top:12px;width:35%;height:50px;border-bottom:0;border-radius:12px 12px 0 0}.energy-valve{position:absolute;left:48%;top:39px;width:15px;height:15px;border:1px solid rgba(100,203,242,.72);transform:rotate(45deg)}.energy-node{position:absolute;left:8%;top:58px;width:6px;height:6px;background:#55bce9}
+
+@media(max-width:980px){
+  .services-hero-v2{grid-template-columns:60% 40% !important}.hero-v2-inner{margin-left:28px;width:calc(100% - 48px)}
+  .industries-v2-inner{grid-template-columns:1fr;gap:32px}.industry-module{min-height:205px}
+}
+@media(max-width:760px){
+  .services-hero-v2{grid-template-columns:1fr !important;min-height:auto !important}.hero-v2-left{min-height:470px}.hero-v2-left::after{display:none}.hero-v2-inner{padding:70px 0 55px}.hero-v2-inner h1{font-size:clamp(48px,14vw,68px);letter-spacing:-3px}.hero-v2-visual{min-height:300px}
+  .execution-strip-inner{grid-template-columns:1fr}.execution-strip-inner::before{display:none}.execution-stage{min-height:65px;padding:14px 16px 12px 44px;border-right:0;border-bottom:1px solid rgba(7,27,43,.07)}.execution-stage::before{left:18px;top:23px}.execution-stage b{position:absolute;right:16px;top:16px}
+  .industries-v2{padding:55px 0 !important}.industry-modules{grid-template-columns:1fr}.industry-module{min-height:170px;border-right:0;border-bottom:1px solid rgba(255,255,255,.10)}.industry-module:last-child{border-bottom:0}.industry-graphic{height:72px}
+}
+</style>
+
+    <link rel="stylesheet" href="responsive-fix.css">
+
+<style id="siw-services-compact-grid-final">
+/* =========================================================
+   FINAL SERVICES COMPACT GRID
+   3 cards per row / no numbering / reduced scrolling
+   ========================================================= */
+
+.services-section{
+    padding:64px 0 88px !important;
+}
+
+.services-section > .container{
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:22px !important;
+}
+
+.services-section > .container::before{
+    display:none !important;
+}
+
+.service-card,
+.service-card:nth-child(even){
+    display:flex !important;
+    flex-direction:column !important;
+    grid-template-columns:none !important;
+    min-height:0 !important;
+    height:100% !important;
+    margin:0 !important;
+    background:#fff !important;
+    border:1px solid rgba(7,27,43,.09) !important;
+    box-shadow:0 10px 30px rgba(7,27,43,.055) !important;
+    overflow:hidden !important;
+}
+
+.service-card::before{
+    display:none !important;
+}
+
+.service-card:nth-child(even) .service-image,
+.service-card:nth-child(even) .service-content{
+    order:initial !important;
+}
+
+.service-image{
+    width:100% !important;
+    height:210px !important;
+    min-height:210px !important;
+    flex:0 0 210px !important;
+}
+
+.service-image img{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+}
+
+.service-content{
+    min-height:0 !important;
+    padding:24px 22px 26px !important;
+    justify-content:flex-start !important;
+    flex:1 !important;
+}
+
+.service-content::before,
+.service-content::after{
+    display:none !important;
+}
+
+.service-number{
+    display:none !important;
+}
+
+.service-tag{
+    margin:0 0 10px !important;
+    color:#1689bd !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    letter-spacing:1.4px !important;
+}
+
+.service-content h3{
+    margin:0 !important;
+    font-size:24px !important;
+    line-height:1.08 !important;
+    letter-spacing:-1px !important;
+}
+
+.service-content p{
+    margin-top:14px !important;
+    font-size:11px !important;
+    line-height:1.7 !important;
+}
+
+.service-list{
+    grid-template-columns:1fr !important;
+    gap:6px !important;
+    margin-top:16px !important;
+}
+
+.service-list li{
+    font-size:10px !important;
+    line-height:1.45 !important;
+}
+
+/* Larger Learn More links in the capabilities cards */
+.capability-learn-more,
+.capability-card > a{
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:10px !important;
+    margin-top:18px !important;
+    color:#087db8 !important;
+    font-size:15px !important;
+    font-weight:800 !important;
+    letter-spacing:.2px !important;
+}
+
+.capability-learn-more span,
+.capability-card > a span{
+    font-size:18px !important;
+    line-height:1 !important;
+}
+
+/* Tablet */
+@media(max-width:1000px){
+    .services-section > .container{
+        grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .service-image{
+        height:220px !important;
+        min-height:220px !important;
+        flex-basis:220px !important;
+    }
+}
+
+/* Mobile */
+@media(max-width:650px){
+    .services-section{
+        padding:50px 0 68px !important;
+    }
+
+    .services-section > .container{
+        grid-template-columns:1fr !important;
+        gap:16px !important;
+    }
+
+    .service-image{
+        height:210px !important;
+        min-height:210px !important;
+        flex-basis:210px !important;
+    }
+
+    .service-content{
+        padding:22px 20px 24px !important;
+    }
+
+    .service-content h3{
+        font-size:23px !important;
+    }
+
+    .capability-learn-more,
+    .capability-card > a{
+        font-size:16px !important;
+    }
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<style>
+/* SIW SHARED HEADER — source: approved About page header */
+#siw-shared-header-root{height:82px}
+.siw-shared-header{position:fixed;top:0;left:0;width:100%;height:82px;z-index:10000;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(16,45,70,.08);box-shadow:0 6px 24px rgba(16,45,70,.05);font-family:"Inter",Arial,Helvetica,sans-serif}
+.siw-shared-header *{box-sizing:border-box}
+.siw-shared-header a{text-decoration:none}
+.siw-shared-nav{width:min(1180px,calc(100% - 60px));height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.siw-shared-brand{display:flex;align-items:center}
+.siw-shared-brand img{display:block;width:155px;height:60px;object-fit:contain}
+.siw-shared-links{display:flex;align-items:center;gap:27px}
+.siw-shared-links>a,.siw-shared-drop-btn{border:0;background:none;color:#102d46;font-size:13px;font-weight:600;cursor:pointer;transition:.25s ease;font-family:inherit}
+.siw-shared-links>a:hover,.siw-shared-drop-btn:hover{color:#1689bd}
+.siw-shared-drop{position:relative}
+.siw-shared-drop-btn{display:flex;align-items:center;gap:7px;padding:0}
+.siw-shared-drop-btn span{font-size:11px;transition:.25s ease}
+.siw-shared-drop:hover .siw-shared-drop-btn span{transform:rotate(180deg)}
+.siw-shared-drop-menu{position:absolute;top:calc(100% + 20px);left:50%;transform:translateX(-50%) translateY(8px);width:210px;padding:10px;background:#fff;border:1px solid #e1e8ed;box-shadow:0 20px 50px rgba(16,45,70,.12);opacity:0;visibility:hidden;transition:.25s ease}
+.siw-shared-drop:hover .siw-shared-drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.siw-shared-drop-menu a{display:block;padding:12px 14px;color:#506674;font-size:12px;font-weight:500;transition:.2s ease}
+.siw-shared-drop-menu a:hover{color:#1689bd;background:#f2f7fa}
+.siw-shared-contact{padding:11px 18px;border:1px solid #b8cbd6}
+.siw-shared-menu{display:none;width:40px;height:40px;border:0;background:transparent;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.siw-shared-menu span{width:23px;height:2px;background:#102d46}
+@media(max-width:900px){
+ .siw-shared-nav{width:calc(100% - 36px)}
+ .siw-shared-menu{display:flex}
+ .siw-shared-links{position:fixed;top:82px;left:0;right:0;display:none;flex-direction:column;align-items:stretch;gap:0;padding:15px 18px 25px;background:#fff;box-shadow:0 20px 35px rgba(7,27,43,.12)}
+ .siw-shared-links.open{display:flex}
+ .siw-shared-links>a,.siw-shared-drop-btn{width:100%;padding:14px 5px;text-align:left}
+ .siw-shared-drop-menu{position:static;display:none;width:100%;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;padding:0 0 0 12px}
+ .siw-shared-drop.mobile-open .siw-shared-drop-menu{display:block}
+}
+</style>
+<header class="siw-shared-header">
+  <div class="siw-shared-nav">
+    <a href="index.html" class="siw-shared-brand"><img src="5.png" alt="Sinsina Industrial Works"></a>
+    <button class="siw-shared-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav class="siw-shared-links">
+      <a href="index.html">Home</a>
+      <div class="siw-shared-drop">
+        <button class="siw-shared-drop-btn" type="button">About <span>⌄</span></button>
+        <div class="siw-shared-drop-menu">
+          <a href="about.html">About Us</a>
+          <a href="certifications.html">Our Certifications</a>
+            <a href="clients.html">Our Clients</a>
+
+        </div>
+      </div>
+      <div class="siw-shared-drop">
+        <button class="siw-shared-drop-btn" type="button">Our Products <span>⌄</span></button>
+        <div class="siw-shared-drop-menu">
+          <a href="products.html">Products</a>
+          <a href="services.html">Services</a>
+        </div>
+      </div>
+      <a href="news.html">News</a>
+      <a href="career.html">Career</a>
+     <a href="index.html#partnership">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+(function(){
+  function init(){
+    var menu=document.querySelector('.siw-shared-menu');
+    var links=document.querySelector('.siw-shared-links');
+    if(menu&&links&&!menu.dataset.bound){
+      menu.dataset.bound='1';
+      menu.addEventListener('click',function(){links.classList.toggle('open');});
+    }
+    document.querySelectorAll('.siw-shared-drop-btn').forEach(function(btn){
+      if(btn.dataset.bound)return; btn.dataset.bound='1';
+      btn.addEventListener('click',function(){
+        if(window.innerWidth<=900){btn.parentElement.classList.toggle('mobile-open');}
+      });
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+
+
+
+
+<!-- =====================================================
+     PAGE
+====================================================== -->
+
+<main class="services-page">
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+
+<section class="services-hero services-hero-v2">
+  <div class="hero-v2-left">
+    <div class="hero-v2-inner">
+   
+      <h1>OUR SERVICES <br><span></span></h1>
+      <p>
+        Engineering, integration, fabrication, verification and commissioning —
+        connected through one coordinated delivery system.
+      </p>
+      
+      <div class="hero-v2-data">
+       
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-v2-visual">
+    <img src="s1.jpeg" alt="Sinsina Industrial Services">
+    <div class="hero-v2-image-overlay"></div>
+    <div class="hero-v2-drawing" aria-hidden="true">
+      <i class="pipe pipe-a"></i>
+      <i class="pipe pipe-b"></i>
+      <i class="valve valve-a"></i>
+      <i class="valve valve-b"></i>
+      <b>PROCESS / SKID / SYSTEM</b>
+    </div>
+    <div class="hero-v2-caption"></div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- =====================================================
+     CAPABILITIES & SERVICES — SLIDE 28
+     Added without removing the existing detailed content
+====================================================== -->
+
+<section class="capabilities-overview" id="capabilities-overview">
+  <div class="container">
+
+    <div class="capabilities-overview-head">
+      <div>
+        <h2>Capabilities &amp; Services</h2>
+      </div>
+
+      <div class="capabilities-overview-copy">
+        <p>
+          SIW brings engineering, fabrication, package integration and project
+          support together to meet defined industrial requirements. Explore our
+          capabilities to understand the scope, processes and services available.
+        </p>
+
+        <a href="mailto:info@sinsinaworks.com?subject=Project%20Requirement"
+           class="capabilities-main-cta">
+          Discuss a Project Requirement
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+
+
+    <div class="capabilities-grid">
+
+      <article class="capability-card">
+        <div class="capability-card-top"></div>
+        <h3>Engineering</h3>
+
+        <ul>
+          <li>Detailed Engineering &amp; Design</li>
+          <li>Stress Analysis</li>
+          <li>Customized Engineering Solutions</li>
+          <li>3D modelling</li>
+        </ul>
+
+        <a href="index.html#partnership" class="capability-learn-more">
+          Learn More <span>→</span>
+        </a>
+      </article>
+
+
+      <article class="capability-card">
+        <div class="capability-card-top"></div>
+        <h3>Manufacturing</h3>
+
+        <ul>
+          <li>Structural fabrication</li>
+          <li>Piping fabrication</li>
+          <li>Tank Fabrication</li>
+          <li>Skid assembly and integration</li>
+        </ul>
+
+        <a href="index.html#partnership" class="capability-learn-more">
+          Learn More <span>→</span>
+        </a>
+      </article>
+
+
+      <article class="capability-card">
+        <div class="capability-card-top"></div>
+        <h3>Integration &amp; Testing</h3>
+
+        <ul>
+          <li>Multi-skid integration</li>
+          <li>Calibration</li>
+          <li>Functional Test</li>
+          <li>Manufacturer Data Report</li>
+        </ul>
+
+        <a href="index.html#partnership" class="capability-learn-more">
+          Learn More <span>→</span>
+        </a>
+      </article>
+
+
+      <article class="capability-card capability-card-accent">
+        <div class="capability-card-top"></div>
+        <h3>Field &amp; Technical Services</h3>
+
+        <ul>
+          <li>Pre-commissioning and commissioning</li>
+          <li>Site support and Services</li>
+          <li>Corrosion monitoring and training</li>
+        </ul>
+
+        <a href="index.html#partnership" class="capability-learn-more">
+          Learn More <span>→</span>
+        </a>
+      </article>
+
+    </div>
+
+
+    <div class="capabilities-bottom-cta">
+      <p>Discuss your package requirements with our team.</p>
+
+      <a href="index.html#partnership">
+        Contact Our Team
+        <span>→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =====================================================
+     SERVICES
+====================================================== -->
+
+<section
+    class="services-section"
+    id="services"
+>
+
+    <div class="container">
+
+
+        <!-- SERVICE 01 -->
+
+        <article class="service-card reveal">
+
+
+            <div class="service-image">
+
+                <img
+                    src="s1.jpeg"
+                    alt="Process Skid Packages"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+<div class="service-tag">
+                    Process Systems
+                </div>
+
+
+                <h3>
+                    Process Skid
+                    Packages
+                </h3>
+
+
+                <p>
+
+                    Purpose-built modular process packages
+                    engineered for demanding oil and gas
+                    applications, with equipment and systems
+                    integrated into a controlled fabrication
+                    environment.
+
+                </p>
+
+
+                <ul class="service-list">
+
+                    <li>
+                        Gas Modular / Oil Modular
+                    </li>
+
+                    <li>
+                        Water Injection
+                    </li>
+
+                    <li>
+                        Chemical Injection
+                    </li>
+
+                    <li>
+                        Surge Relief
+                    </li>
+
+                    <li>
+                        Dehydration
+                    </li>
+
+                    <li>
+                        Lube Oil
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 02 -->
+
+        <article class="service-card reveal" id="manufacturing-detail">
+
+
+            <div class="service-image">
+
+                <img
+                    src="s2.jpeg"
+                    alt="Mechanical and Structural Skids"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+<div class="service-tag">
+                    Mechanical Fabrication
+                </div>
+
+
+                <h3>
+                    Mechanical &
+                    Structural Skids
+                </h3>
+
+
+                <p>
+
+                    Heavy-duty mechanical and structural
+                    fabrication combining precision steelwork,
+                    piping and skid structures into complete
+                    industrial assemblies.
+
+                </p>
+
+
+                <ul class="service-list">
+
+                    <li>
+                        Piping & Frame Skids
+                    </li>
+
+                    <li>
+                        Annuli Riser Skids
+                    </li>
+
+                    <li>
+                        OPTF Skids
+                    </li>
+
+                    <li>
+                        Structural Frames
+                    </li>
+
+                    <li>
+                        Supports & Platforms
+                    </li>
+
+                    <li>
+                        Integrated Assemblies
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 03 -->
+
+        <article class="service-card reveal" id="integration-testing-detail">
+
+
+            <div class="service-image">
+
+                <img
+                    src="s3.jpeg"
+                    alt="E&I Integrated Skids"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+<div class="service-tag">
+                    Electrical & Instrumentation
+                </div>
+
+
+                <h3>
+                    E&I Integrated
+                    Skids
+                </h3>
+
+
+                <p>
+
+                    Electrical and instrumentation systems
+                    integrated directly within skid packages
+                    to simplify site interfaces and support
+                    efficient commissioning.
+
+                </p>
+
+
+                <ul class="service-list">
+
+                    <li>
+                        Electrical Skids
+                    </li>
+
+                    <li>
+                        Instrumentation Skids
+                    </li>
+
+                    <li>
+                        Combined E&I Skids
+                    </li>
+
+                    <li>
+                        System Integration
+                    </li>
+
+                    <li>
+                        Testing
+                    </li>
+
+                    <li>
+                        Commissioning Support
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 04 -->
+
+        <article class="service-card reveal" id="engineering-detail">
+
+
+            <div class="service-image">
+
+                <img
+                    src="s4.jpeg"
+                    alt="Engineering and Design"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+<div class="service-tag">
+                    Engineering
+                </div>
+
+
+                <h3>
+                    Engineering
+                    & Design
+                </h3>
+
+
+                <p>
+
+                    Turning complex project requirements
+                    into fabrication-ready engineering
+                    packages with a strong focus on
+                    constructability and integration.
+
+                </p>
+
+
+                <ul class="service-list">
+
+                    <li>
+                        Conceptual Design
+                    </li>
+
+                    <li>
+                        Detailed Design
+                    </li>
+
+                    <li>
+                        3D Modeling
+                    </li>
+
+                    <li>
+                        Project Engineering
+                    </li>
+
+                    <li>
+                        Fabrication Drawings
+                    </li>
+
+                    <li>
+                        Technical Coordination
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SERVICE 05 -->
+
+        <article class="service-card reveal" id="field-services-detail">
+
+
+            <div class="service-image">
+
+                <img
+                    src="s5.jpeg"
+                    alt="Fabrication Installation and Commissioning"
+                >
+
+            </div>
+
+
+            <div class="service-content">
+<div class="service-tag">
+                    Delivery & Field Execution
+                </div>
+
+
+                <h3>
+                    Fabrication,
+                    Installation
+                    & Commissioning
+                </h3>
+
+
+                <p>
+
+                    Our shop-led delivery model carries the
+                    project beyond fabrication — through
+                    assembly, site installation, testing,
+                    handover and commissioning.
+
+                </p>
+
+
+                <ul class="service-list">
+
+                    <li>
+                        Structural Steel Fabrication
+                    </li>
+
+                    <li>
+                        Piping Fabrication
+                    </li>
+
+                    <li>
+                        Mechanical Builds
+                    </li>
+
+                    <li>
+                        E&I Integration
+                    </li>
+
+                    <li>
+                        On-site Installation
+                    </li>
+
+                    <li>
+                        Testing & Handover
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+
+<!-- =====================================================
+     ENGINEERING JOURNEY
+====================================================== -->
+
+
+
+
+
+
+
+
+<!-- =====================================================
+     PROMISE
+====================================================== -->
+
+
+
+
+<!-- =====================================================
+     CTA
+====================================================== -->
+
+
+
+
+</main>
+
+
+ <!-- =====================================================
+         FOOTER
+         IMPORTANT:
+         Footer is OUTSIDE every .container
+    ====================================================== -->
+
+    <style>
+/* SIW SHARED FOOTER — matched to approved footer reference */
+.siw-shared-footer{width:100%;padding:65px 0 30px;background:#081d2d;color:#fff;font-family:"Inter",Arial,Helvetica,sans-serif}
+.siw-shared-footer *{box-sizing:border-box}
+.siw-shared-footer a{text-decoration:none}
+.siw-footer-container{width:min(1180px,calc(100% - 60px));margin:auto}
+.siw-footer-top{display:grid;grid-template-columns:1.5fr .8fr .8fr;gap:80px;padding-bottom:50px;border-bottom:1px solid rgba(255,255,255,.10)}
+.siw-footer-brandline{display:grid;grid-template-columns:125px 1fr;gap:24px;align-items:start}
+.siw-footer-brand img{display:block;width:125px;max-height:105px;object-fit:contain;object-position:left top}
+.siw-footer-brand p{max-width:360px;margin:0;color:rgba(255,255,255,.78);font-size:11px;line-height:1.9}
+.siw-footer-socials{display:flex;align-items:center;gap:9px;margin-top:16px}
+.siw-footer-social{width:31px;height:31px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.18);border-radius:50%;color:rgba(255,255,255,.70);font-size:9px;font-weight:800;transition:.25s ease}
+.siw-footer-social:hover{background:#35a8dd;border-color:#35a8dd;color:#fff;transform:translateY(-2px)}
+.siw-footer-column h4{margin:0 0 22px;color:#fff;font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}
+.siw-footer-column a{display:block;width:fit-content;margin-bottom:13px;color:rgba(255,255,255,.52);font-size:11px;line-height:1.5;transition:.25s ease}
+.siw-footer-column a:hover{color:#35a8dd;transform:translateX(3px)}
+.siw-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:25px;color:rgba(255,255,255,.30);font-size:9px;letter-spacing:1px}
+@media(max-width:900px){.siw-footer-top{grid-template-columns:1fr 1fr;gap:35px}.siw-footer-brand{grid-column:1/-1}.siw-footer-bottom{flex-direction:column;align-items:flex-start;gap:10px}}
+@media(max-width:620px){.siw-footer-container{width:calc(100% - 36px)}.siw-footer-top{grid-template-columns:1fr}.siw-footer-brandline{grid-template-columns:95px 1fr}.siw-footer-brand img{width:95px}.siw-footer-brand p{font-size:10px}}
+
+
+/* =========================================================
+   SLIDE 28 — CAPABILITIES OVERVIEW
+   Added to current Services page. Existing content retained.
+========================================================= */
+
+.capabilities-overview{
+  padding:78px 0 82px;
+  background:#ffffff;
+  border-top:1px solid rgba(7,27,43,.07);
+  border-bottom:1px solid rgba(7,27,43,.07);
+}
+
+.capabilities-overview-head{
+  display:grid;
+  grid-template-columns:.78fr 1.22fr;
+  gap:68px;
+  align-items:start;
+  margin-bottom:34px;
+}
+
+.capabilities-overview-head h2{
+  max-width:460px;
+  color:#102d46;
+  font-size:clamp(34px,3.8vw,52px);
+  line-height:1;
+  letter-spacing:-2px;
+  font-weight:800;
+}
+
+.capabilities-overview-copy p{
+  max-width:680px;
+  color:#687b89;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.capabilities-main-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  margin-top:20px;
+  padding:12px 16px;
+  background:#087db8;
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  transition:.25s ease;
+}
+
+.capabilities-main-cta:hover{
+  background:#35a8dd;
+  gap:16px;
+}
+
+.capabilities-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+
+.capability-card{
+  position:relative;
+  min-height:315px;
+  padding:28px 24px 22px;
+  background:#f7f9fa;
+  border:1px solid #dce5e9;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.capability-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 42px rgba(7,27,43,.08);
+}
+
+.capability-card-top{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:#2b8f93;
+}
+
+.capability-card-accent .capability-card-top{
+  background:#dca02f;
+}
+
+.capability-card h3{
+  margin-top:7px;
+  color:#102d46;
+  font-size:18px;
+  line-height:1.2;
+  font-weight:800;
+}
+
+.capability-card ul{
+  margin:22px 0 24px;
+  padding-left:18px;
+}
+
+.capability-card li{
+  margin-bottom:10px;
+  color:#526976;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.capability-card>a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:fit-content;
+  margin-top:auto;
+  color:#087db8;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+
+.capability-card>a:hover{
+  color:#35a8dd;
+  gap:12px;
+}
+
+.capabilities-bottom-cta{
+  margin-top:18px;
+  padding:20px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  background:#102d46;
+}
+
+.capabilities-bottom-cta p{
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+}
+
+.capabilities-bottom-cta a{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+  padding:11px 14px;
+  background:#087db8;
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+
+.capabilities-bottom-cta a:hover{
+  background:#35a8dd;
+}
+
+#engineering-detail,
+#manufacturing-detail,
+#integration-testing-detail,
+#field-services-detail{
+  scroll-margin-top:105px;
+}
+
+@media(max-width:1000px){
+  .capabilities-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:700px){
+  .capabilities-overview{
+    padding:58px 0 62px;
+  }
+
+  .capabilities-overview-head{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+
+  .capabilities-grid{
+    grid-template-columns:1fr;
+  }
+
+  .capability-card{
+    min-height:auto;
+  }
+
+  .capabilities-bottom-cta{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+</style>
+<footer class="siw-shared-footer">
+  <div class="siw-footer-container">
+    <div class="siw-footer-top">
+      <div class="siw-footer-brand">
+        <div class="siw-footer-brandline">
+          <img src="5.png" alt="Sinsina Industrial Works">
+          <div>
+            <p>Saudi engineering and manufacturing company specializing in instrumentation, mechanical and electrical integration, and custom steel fabrication.</p>
+            <div class="siw-footer-socials">
+              <a href="https://www.linkedin.com/company/sinsinaworks/" target="_blank" rel="noopener noreferrer" class="siw-footer-social" aria-label="LinkedIn">in</a>
+              <a href="#" class="siw-footer-social" aria-label="Facebook">f</a>
+              <a href="#" class="siw-footer-social" aria-label="X">X</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="siw-footer-column">
+        <h4>Explore</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="products.html">Our Products</a>
+      </div>
+      <div class="siw-footer-column">
+        <h4>Contact</h4>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Our Services</a>
+        <a href="certifications.html">Certifications</a>
+      </div>
+    </div>
+    <div class="siw-footer-bottom">
+      <span>© 2026 Sinsina Industrial Works</span>
+      <span>Engineering · Fabrication · Integration</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const cards = document.querySelectorAll(".service-card");
+  if("IntersectionObserver" in window){
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.14, rootMargin:"0px 0px -35px 0px"});
+    cards.forEach(card => obs.observe(card));
+  }else{
+    cards.forEach(card => card.classList.add("is-visible"));
+  }
+});
+</script>
+<script src="cms-runtime-data.js"></script>
+<script src="cms-runtime.js"></script>
+</body>
+
+</html>

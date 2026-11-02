@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Clients | Sinsina Industrial Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#102d46;
+  --dark:#071b2b;
+  --blue:#087db8;
+  --cyan:#35a8dd;
+  --light:#eef3f6;
+  --white:#fff;
+  --text:#687b89;
+  --line:#d8e2e7;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Inter",Arial,Helvetica,sans-serif;
+  background:#f5f8fa;
+  color:var(--navy);
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+button{font:inherit}
+.container{width:min(1180px,calc(100% - 60px));margin:auto}
+
+/* SHARED HEADER */
+.siw-shared-header{
+  position:fixed;top:0;left:0;width:100%;height:82px;z-index:10000;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(16,45,70,.08);
+  box-shadow:0 6px 24px rgba(16,45,70,.05);
+}
+.siw-shared-nav{
+  width:min(1180px,calc(100% - 60px));height:100%;margin:auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.siw-shared-brand img{width:155px;height:60px;object-fit:contain}
+.siw-shared-links{display:flex;align-items:center;gap:27px}
+.siw-shared-links>a,.siw-shared-drop-btn{
+  border:0;background:none;color:#102d46;font-size:13px;font-weight:600;
+  cursor:pointer;transition:.25s ease;
+}
+.siw-shared-links>a:hover,.siw-shared-drop-btn:hover{color:#1689bd}
+.siw-shared-drop{position:relative}
+.siw-shared-drop-btn{display:flex;align-items:center;gap:7px}
+.siw-shared-drop-menu{
+  position:absolute;top:calc(100% + 20px);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  width:210px;padding:10px;background:#fff;border:1px solid #e1e8ed;
+  box-shadow:0 20px 50px rgba(16,45,70,.12);
+  opacity:0;visibility:hidden;transition:.25s ease;
+}
+.siw-shared-drop:hover .siw-shared-drop-menu{
+  opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);
+}
+.siw-shared-drop-menu a{
+  display:block;padding:12px 14px;color:#506674;font-size:12px;
+}
+.siw-shared-drop-menu a:hover{color:#1689bd;background:#f2f7fa}
+.siw-shared-contact{padding:11px 18px;border:1px solid #b8cbd6}
+.siw-shared-menu{
+  display:none;width:40px;height:40px;border:0;background:transparent;cursor:pointer;
+}
+.siw-shared-menu span{
+  display:block;width:23px;height:2px;margin:5px auto;background:#102d46;
+}
+
+/* HERO */
+.clients-hero{
+  position:relative;
+  padding:155px 0 68px;
+  background:#071b2b;
+  overflow:hidden;
+  color:#fff;
+}
+.clients-hero::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(53,168,221,.18),transparent 30%),
+    linear-gradient(rgba(53,168,221,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(53,168,221,.055) 1px,transparent 1px);
+  background-size:auto,56px 56px,56px 56px;
+}
+.clients-hero .container{position:relative;z-index:2}
+.clients-hero h1{
+  font-size:clamp(44px,5vw,66px);
+  line-height:1;
+  letter-spacing:-2.4px;
+  font-weight:800;
+}
+.clients-hero p{
+  max-width:650px;
+  margin-top:18px;
+  color:rgba(255,255,255,.66);
+  font-size:13px;
+  line-height:1.75;
+}
+
+/* CLIENTS */
+.clients-section{
+  padding:68px 0 90px;
+  background:#fff;
+}
+.clients-head h3{
+  text-align:center;
+  margin:0 auto;
+}
+.clients-head{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:60px;
+  align-items:end;
+  margin-bottom:28px;
+}
+.clients-head h2{
+  font-size:clamp(30px,3.5vw,46px);
+  line-height:1;
+  letter-spacing:-1.5px;
+  font-weight:800;
+}
+.clients-head p{
+  max-width:600px;
+  color:#687b89;
+  font-size:12px;
+  line-height:1.75;
+}
+.clients-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.client-card{
+  position:relative;
+  height:145px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:#f7f9fa;
+  border:1px solid #dce5ea;
+  transition:.25s ease;
+  overflow:hidden;
+}
+.client-card::before{
+  content:"";
+  position:absolute;left:0;bottom:0;width:0;height:3px;background:#35a8dd;
+  transition:.25s ease;
+}
+.client-card:hover{
+  transform:translateY(-4px);
+  background:#fff;
+  box-shadow:0 16px 34px rgba(7,27,43,.07);
+}
+.client-card:hover::before{width:100%}
+.client-card img{
+  max-width:135px;
+  max-height:74px;
+  object-fit:contain;
+}
+
+/* FOOTER */
+.siw-shared-footer{
+  width:100%;padding:65px 0 30px;background:#081d2d;color:#fff;
+}
+.siw-footer-container{width:min(1180px,calc(100% - 60px));margin:auto}
+.siw-footer-top{
+  display:grid;grid-template-columns:1.5fr .8fr .8fr;gap:80px;
+  padding-bottom:50px;border-bottom:1px solid rgba(255,255,255,.10);
+}
+.siw-footer-brandline{display:grid;grid-template-columns:125px 1fr;gap:24px}
+.siw-footer-brand img{width:125px;max-height:105px;object-fit:contain}
+.siw-footer-brand p{
+  max-width:360px;color:rgba(255,255,255,.78);font-size:11px;line-height:1.9;
+}
+.siw-footer-socials{display:flex;gap:9px;margin-top:16px}
+.siw-footer-social{
+  width:31px;height:31px;border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.70);font-size:9px;font-weight:800;
+}
+.siw-footer-column h4{
+  margin-bottom:22px;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;
+}
+.siw-footer-column a{
+  display:block;width:fit-content;margin-bottom:13px;
+  color:rgba(255,255,255,.52);font-size:11px;
+}
+.siw-footer-column a:hover{color:#35a8dd}
+.siw-footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-top:25px;color:rgba(255,255,255,.30);font-size:9px;letter-spacing:1px;
+}
+
+@media(max-width:900px){
+  .siw-shared-nav{width:calc(100% - 36px)}
+  .siw-shared-menu{display:block}
+  .siw-shared-links{
+    position:fixed;top:82px;left:0;right:0;display:none;
+    flex-direction:column;align-items:stretch;gap:0;
+    padding:15px 18px 25px;background:#fff;
+    box-shadow:0 20px 35px rgba(7,27,43,.12);
+  }
+  .siw-shared-links.open{display:flex}
+  .siw-shared-links>a,.siw-shared-drop-btn{
+    width:100%;padding:14px 5px;text-align:left;
+  }
+  .siw-shared-drop-menu{
+    position:static;display:none;width:100%;opacity:1;visibility:visible;
+    transform:none;box-shadow:none;border:0;padding:0 0 0 12px;
+  }
+  .siw-shared-drop.mobile-open .siw-shared-drop-menu{display:block}
+  .clients-grid{grid-template-columns:repeat(2,1fr)}
+  .clients-head{grid-template-columns:1fr;gap:16px}
+  .siw-footer-top{grid-template-columns:1fr 1fr;gap:35px}
+  .siw-footer-brand{grid-column:1/-1}
+}
+
+@media(max-width:620px){
+  .container,.siw-footer-container{width:calc(100% - 34px)}
+  .clients-hero{padding:135px 0 54px}
+  .clients-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .client-card{height:118px;padding:16px}
+  .client-card img{max-width:105px;max-height:60px}
+  .siw-footer-top{grid-template-columns:1fr}
+  .siw-footer-brandline{grid-template-columns:95px 1fr}
+  .siw-footer-brand img{width:95px}
+  .siw-footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+    <link rel="stylesheet" href="responsive-fix.css">
+</head>
+<body>
+
+<header class="siw-shared-header">
+  <div class="siw-shared-nav">
+    <a href="index.html" class="siw-shared-brand"><img src="5.png" alt="Sinsina Industrial Works"></a>
+
+    <button class="siw-shared-menu" type="button" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="siw-shared-links">
+      <a href="index.html">Home</a>
+
+      <div class="siw-shared-drop">
+        <button class="siw-shared-drop-btn" type="button">About <span>⌄</span></button>
+        <div class="siw-shared-drop-menu">
+          <a href="about.html">About Us</a>
+          <a href="certifications.html">Our Certifications</a>
+          <a href="clients.html">Our Clients</a>
+        </div>
+      </div>
+
+      <div class="siw-shared-drop">
+        <button class="siw-shared-drop-btn" type="button">Our Products <span>⌄</span></button>
+        <div class="siw-shared-drop-menu">
+          <a href="products.html">Products</a>
+          <a href="services.html">Services</a>
+        </div>
+      </div>
+
+      <a href="news.html">News</a>
+      <a href="career.html">Career</a>
+   <a href="index.html#partnership">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="clients-hero">
+    <div class="container">
+      <h1>Our Clients</h1>
+      <p>
+        Trusted by leading organizations across the energy, industrial and
+        infrastructure sectors.
+      </p>
+    </div>
+  </section>
+
+  <section class="clients-section">
+    <div class="container">
+      <div class="clients-head">
+     
+        <H3>
+        
+        </H3>
+      </div>
+
+      <div class="clients-grid">
+        <div class="client-card"><img src="Sabek.jpeg" alt="SABIC"></div>
+        <div class="client-card"><img src="do.png" alt="Nomus Lloyd"></div>
+        <div class="client-card"><img src="صوصو.png" alt="Sadara"></div>
+        <div class="client-card"><img src="aramco.png" alt="Saudi Aramco"></div>
+        <div class="client-card"><img src="شرق.png" alt="Sharq"></div>
+        <div class="client-card"><img src="سيب.png" alt="Saipem"></div>
+        <div class="client-card"><img src="ازرق.png" alt="GE"></div>
+        <div class="client-card"><img src="sa .png" alt="Saudi Electricity Company"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="siw-shared-footer">
+  <div class="siw-footer-container">
+    <div class="siw-footer-top">
+
+      <div class="siw-footer-brand">
+        <div class="siw-footer-brandline">
+          <img src="5.png" alt="Sinsina Industrial Works">
+          <div>
+            <p>
+              Saudi engineering and manufacturing company specializing in
+              instrumentation, mechanical and electrical integration,
+              and custom steel fabrication.
+            </p>
+            <div class="siw-footer-socials">
+              <a href="https://www.linkedin.com/company/sinsinaworks/"
+                 target="_blank" rel="noopener noreferrer"
+                 class="siw-footer-social">in</a>
+              <a href="#" class="siw-footer-social">f</a>
+              <a href="#" class="siw-footer-social">X</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="siw-footer-column">
+        <h4>Explore</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="products.html">Our Products</a>
+      </div>
+
+      <div class="siw-footer-column">
+        <h4>Contact</h4>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Our Services</a>
+        <a href="certifications.html">Certifications</a>
+   
+      </div>
+
+    </div>
+
+    <div class="siw-footer-bottom">
+      <span>© 2026 Sinsina Industrial Works</span>
+      <span>Engineering · Fabrication · Integration</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const menu=document.querySelector('.siw-shared-menu');
+  const links=document.querySelector('.siw-shared-links');
+
+  if(menu&&links){
+    menu.addEventListener('click',function(){
+      links.classList.toggle('open');
+    });
+  }
+
+  document.querySelectorAll('.siw-shared-drop-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(window.innerWidth<=900){
+        btn.parentElement.classList.toggle('mobile-open');
+      }
+    });
+  });
+})();
+</script>
+
+<script src="cms-runtime-data.js"></script>
+<script src="cms-runtime.js"></script>
+</body>
+</html>

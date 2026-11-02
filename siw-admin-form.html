@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIW Admin CMS — Frontend Form</title>
+<style>
+:root{
+ --navy:#071b2b;--navy2:#102d46;--blue:#087db8;--cyan:#35a8dd;
+ --bg:#eef3f6;--surface:#fff;--line:#d9e3e8;--text:#647986;--ink:#102d46;
+ --danger:#a64242;--success:#197657;--sidebar:270px
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:var(--sidebar) 1fr}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);height:100vh;overflow:auto;background:var(--navy);color:#fff;padding:24px 18px}
+.brand{padding:0 9px 22px;border-bottom:1px solid rgba(255,255,255,.11);margin-bottom:20px}
+.brand small{display:block;color:#56bce4;font-size:8px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.brand h1{font:500 27px/1.05 Georgia,serif;margin:8px 0 7px}.brand p{margin:0;color:#7994a4;font-size:9px;line-height:1.55}
+.nav-label{margin:19px 9px 8px;color:#63879b;font-size:8px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.nav-btn{width:100%;height:42px;border:0;border-left:3px solid transparent;background:transparent;color:#ccdae2;display:flex;align-items:center;justify-content:space-between;padding:0 11px;font-size:11px;text-align:left}
+.nav-btn:hover,.nav-btn.active{background:rgba(255,255,255,.06);border-left-color:var(--cyan);color:#fff}
+.nav-btn span{font-size:7px;color:#66899d;font-weight:900}
+.main{grid-column:2;min-width:0}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);min-height:84px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.topbar small{display:block;color:var(--blue);font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}.topbar h2{margin:0;font:500 30px/1 Georgia,serif}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{height:38px;padding:0 14px;border:1px solid var(--navy2);background:#fff;color:var(--navy2);font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.btn.primary{background:var(--navy2);color:#fff}.btn.success{background:var(--success);border-color:var(--success);color:#fff}
+.content{padding:31px}.view{display:none}.view.active{display:block}
+.intro{display:grid;grid-template-columns:1fr minmax(260px,480px);gap:50px;align-items:end;margin-bottom:27px}.eyebrow{color:var(--blue);font-size:8px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px}
+.intro h3{margin:0;font:500 40px/1 Georgia,serif}.intro p{margin:0;color:var(--text);font-size:12px;line-height:1.7}
+.box{background:#fff;border:1px solid var(--line);margin-bottom:17px}.box-head{min-height:64px;padding:0 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.box-head h4{margin:0;font:600 20px Georgia,serif}.box-head small{color:var(--blue);font-size:7px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.box-body{padding:19px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.field{margin-bottom:13px}.field.full{grid-column:1/-1}label{display:block;color:#5b707c;font-size:7px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px}
+input,textarea,select{width:100%;border:1px solid #d3dfe5;background:#fff;color:#293e4b;outline:none;font-size:11px}input,select{height:41px;padding:0 10px}textarea{min-height:105px;padding:10px;resize:vertical;line-height:1.55}input[type=color]{padding:3px}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(8,125,184,.06)}
+.section-card{border:1px solid var(--line);background:#fff;margin-bottom:13px}.section-trigger{width:100%;border:0;background:#fff;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;text-align:left;color:var(--navy2)}
+.section-trigger strong{font-size:13px}.section-trigger span{font-size:8px;color:var(--blue);font-weight:900}.section-body{display:none;border-top:1px solid var(--line);padding:18px;background:#fbfcfd}.section-card.open .section-body{display:block}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:17px}.tab{height:31px;padding:0 11px;border:1px solid #cbd9df;background:#fff;color:#607582;font-size:8px;font-weight:900;text-transform:uppercase}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.subpanel{display:none}.subpanel.active{display:block}.hint{padding:12px 14px;background:#e9f5fa;border-left:3px solid var(--blue);color:#4f707f;font-size:10px;line-height:1.6;margin-bottom:17px}
+.media-row{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:start}.preview{height:120px;border:1px solid var(--line);background:#f3f6f8;display:grid;place-items:center;overflow:hidden}.preview img{width:100%;height:100%;object-fit:cover}
+.colors{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.color-card{padding:12px;border:1px solid var(--line);background:#fafcfd}.color-card input{height:46px;padding:2px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.stat{background:#fff;border:1px solid var(--line);padding:18px;min-height:130px}.stat small{color:#7d909b;font-size:7px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.stat strong{display:block;margin-top:24px;font:500 34px Georgia,serif;color:var(--navy2)}.stat p{font-size:9px;color:var(--text);line-height:1.5}
+.footer-note{margin-top:20px;color:#7c8f99;font-size:9px}.toast{position:fixed;right:20px;bottom:20px;padding:12px 15px;background:var(--navy);color:#fff;font-size:9px;opacity:0;transform:translateY(10px);transition:.2s;z-index:100}.toast.show{opacity:1;transform:none}
+@media(max-width:1050px){:root{--sidebar:220px}.grid.three,.grid.four,.colors,.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.app{display:block}.sidebar{position:relative;width:100%;height:auto}.main{grid-column:auto}.topbar{position:relative;align-items:flex-start;flex-direction:column;padding:15px 18px}.content{padding:18px}.intro,.grid,.grid.three,.grid.four,.colors,.cards,.media-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><small>Sinsina Industrial Works</small><h1>Admin CMS</h1><p>Frontend form prepared for backend/API integration.</p></div>
+  <div class="nav-label">Overview</div>
+  <button class="nav-btn active" data-view="dashboard">Dashboard <span>01</span></button>
+  <div class="nav-label">Website Pages</div>
+  <div id="pageNav"></div>
+  <div class="nav-label">Global</div>
+  <button class="nav-btn" data-view="global">Global Design <span>11</span></button>
+  <button class="nav-btn" data-view="header">Header & Navigation <span>12</span></button>
+  <button class="nav-btn" data-view="footer">Footer & Contact <span>13</span></button>
+  <button class="nav-btn" data-view="media">Media Library <span>14</span></button>
+  <button class="nav-btn" data-view="seo">SEO / Settings <span>15</span></button>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div><small>SIW Website Content Management</small><h2 id="topTitle">Dashboard</h2></div>
+ <div class="actions"><button class="btn" onclick="resetForm()">Reset</button><button class="btn primary" onclick="collectData()">Preview Data</button><button class="btn success" onclick="fakeSave()">Save Changes</button></div>
+</header>
+
+<div class="content">
+<section class="view active" id="dashboard">
+ <div class="intro"><div><div class="eyebrow">Overview</div><h3>Admin Dashboard</h3></div><p>A structured frontend CMS form for all current SIW pages. Every field contains a clear <b>data-key</b> so your colleague can connect it to an API or database later.</p></div>
+ <div class="cards">
+  <div class="stat"><small>Website Pages</small><strong>09</strong><p>All current SIW website pages included.</p></div>
+  <div class="stat"><small>Editing Groups</small><strong>06</strong><p>Content, Media, Typography, Colors, Spacing and Layout.</p></div>
+  <div class="stat"><small>Backend Ready</small><strong>YES</strong><p>Every field uses stable IDs and data-key paths.</p></div>
+  <div class="stat"><small>Login / DB</small><strong>LATER</strong><p>UI is intentionally independent of authentication and database logic.</p></div>
+ </div>
+ <div class="box"><div class="box-head"><div><small>Architecture</small><h4>Frontend Handoff</h4></div></div><div class="box-body">
+  <div class="hint">Example: <code>data-key="home.hero.title"</code>. Your backend colleague can read/write this key from any API/database without changing the UI design.</div>
+  <div class="grid three"><div><b>Content</b><p class="footer-note">Headings, paragraphs, button labels, links and repeated items.</p></div><div><b>Design</b><p class="footer-note">Fonts, colors, shapes, sizing, margins, padding, grid and responsive values.</p></div><div><b>Media</b><p class="footer-note">Normal images, background images, alt text, object fit and image position.</p></div></div>
+ </div></div>
+</section>
+
+<section class="view" id="pageEditor">
+ <div class="intro"><div><div class="eyebrow">Page Editor</div><h3 id="pageName">Home</h3></div><p id="pageDesc">Edit each section independently. The same form structure is intentionally consistent across pages.</p></div>
+ <div class="hint">The values here are frontend placeholders. The structure and <code>data-key</code> paths are ready for backend integration.</div>
+ <div id="sectionList"></div>
+</section>
+
+<section class="view" id="global">
+ <div class="intro"><div><div class="eyebrow">Global Design</div><h3>Design & Appearance</h3></div><p>Values intended to control the whole website globally.</p></div>
+ <div class="box"><div class="box-head"><div><small>Brand Theme</small><h4>Colors</h4></div></div><div class="box-body colors">
+  <div class="color-card"><label>Navy</label><input type="color" value="#071b2b" data-key="theme.colors.navy" id="theme_navy"><input value="#071b2b" data-mirror="theme_navy" style="margin-top:6px"></div><div class="color-card"><label>Navy 2</label><input type="color" value="#102d46" data-key="theme.colors.navy2" id="theme_navy2"><input value="#102d46" data-mirror="theme_navy2" style="margin-top:6px"></div><div class="color-card"><label>Blue</label><input type="color" value="#087db8" data-key="theme.colors.blue" id="theme_blue"><input value="#087db8" data-mirror="theme_blue" style="margin-top:6px"></div><div class="color-card"><label>Cyan</label><input type="color" value="#35a8dd" data-key="theme.colors.cyan" id="theme_cyan"><input value="#35a8dd" data-mirror="theme_cyan" style="margin-top:6px"></div><div class="color-card"><label>Light Background</label><input type="color" value="#eef3f6" data-key="theme.colors.light" id="theme_light"><input value="#eef3f6" data-mirror="theme_light" style="margin-top:6px"></div><div class="color-card"><label>White</label><input type="color" value="#ffffff" data-key="theme.colors.white" id="theme_white"><input value="#ffffff" data-mirror="theme_white" style="margin-top:6px"></div><div class="color-card"><label>Text</label><input type="color" value="#687c89" data-key="theme.colors.text" id="theme_text"><input value="#687c89" data-mirror="theme_text" style="margin-top:6px"></div><div class="color-card"><label>Lines</label><input type="color" value="#d9e3e8" data-key="theme.colors.line" id="theme_line"><input value="#d9e3e8" data-mirror="theme_line" style="margin-top:6px"></div>
+ </div></div>
+ <div class="box"><div class="box-head"><div><small>Typography</small><h4>Global Fonts</h4></div></div><div class="box-body grid four">
+  <div class="field"><label>Body Font</label><select data-key="theme.typography.bodyFont"><option>Inter</option><option>Arial</option><option>Segoe UI</option><option>Helvetica</option><option>Georgia</option></select></div>
+  <div class="field"><label>Heading Font</label><select data-key="theme.typography.headingFont"><option>Inter</option><option>Georgia</option><option>Arial</option><option>Segoe UI</option></select></div>
+  <div class="field"><label>Base Font Size</label><input type="number" value="14" data-key="theme.typography.baseSize"></div>
+  <div class="field"><label>Container Width</label><input type="number" value="1180" data-key="theme.layout.containerWidth"></div>
+ </div></div>
+ <div class="box"><div class="box-head"><div><small>Shape System</small><h4>Global UI Shape</h4></div></div><div class="box-body grid four">
+  <div class="field"><label>Button Radius</label><input type="number" value="0" data-key="theme.shape.buttonRadius"></div>
+  <div class="field"><label>Card Radius</label><input type="number" value="0" data-key="theme.shape.cardRadius"></div>
+  <div class="field"><label>Border Width</label><input type="number" value="1" data-key="theme.shape.borderWidth"></div>
+  <div class="field"><label>Shadow Strength</label><input type="range" min="0" max="100" value="15" data-key="theme.shape.shadowStrength"></div>
+ </div></div>
+</section>
+
+<section class="view" id="header">
+ <div class="intro"><div><div class="eyebrow">Global</div><h3>Header & Navigation</h3></div><p>Prepared as global content so the backend can apply it to every page.</p></div>
+ <div class="box"><div class="box-body">
+  <div class="media-row"><div class="preview"><img src="5.png" onerror="this.style.display='none'"></div><div>
+   <div class="field"><label>Logo</label><input type="file" accept="image/*" data-key="header.logo.file"></div>
+   <div class="grid"><div class="field"><label>Logo Path</label><input value="5.png" data-key="header.logo.src"></div><div class="field"><label>Logo Width</label><input type="number" value="155" data-key="header.logo.width"></div></div>
+  </div></div>
+  <div class="grid four">
+   <div class="field"><label>Header Height</label><input type="number" value="82" data-key="header.height"></div>
+   <div class="field"><label>Background</label><input type="color" value="#ffffff" data-key="header.background"></div>
+   <div class="field"><label>Text Color</label><input type="color" value="#102d46" data-key="header.textColor"></div>
+   <div class="field"><label>Menu Gap</label><input type="number" value="27" data-key="header.navGap"></div>
+  </div>
+  <div class="grid three">
+   <div class="field"><label>Contact Label</label><input value="Contact" data-key="header.contact.label"></div>
+   <div class="field"><label>Contact Link</label><input value="mailto:info@sinsinaworks.com" data-key="header.contact.href"></div>
+   <div class="field"><label>Contact Style</label><select data-key="header.contact.style"><option>Outline</option><option>Filled</option><option>Pill</option><option>Text</option></select></div>
+  </div>
+ </div></div>
+</section>
+
+<section class="view" id="footer">
+ <div class="intro"><div><div class="eyebrow">Global</div><h3>Footer & Contact</h3></div><p>One structured footer form to be shared across the site.</p></div>
+ <div class="box"><div class="box-body grid">
+  <div class="field"><label>Footer Description</label><textarea data-key="footer.description">Engineering, fabrication and industrial integration solutions built for demanding industries.</textarea></div>
+  <div class="field"><label>Copyright</label><textarea data-key="footer.copyright">© Sinsina Industrial Works. All rights reserved.</textarea></div>
+  <div class="field"><label>Email</label><input value="info@sinsinaworks.com" data-key="footer.contact.email"></div>
+  <div class="field"><label>Phone</label><input data-key="footer.contact.phone"></div>
+  <div class="field"><label>LinkedIn URL</label><input data-key="footer.social.linkedin"></div>
+  <div class="field"><label>Background</label><input type="color" value="#081d2d" data-key="footer.background"></div>
+ </div></div>
+</section>
+
+<section class="view" id="media">
+ <div class="intro"><div><div class="eyebrow">Assets</div><h3>Media Library</h3></div><p>Frontend upload fields only. Your colleague can connect them to server storage later.</p></div>
+ <div class="box"><div class="box-body">
+  <div class="field"><label>Upload Images</label><input type="file" multiple accept="image/*" data-key="media.upload"></div>
+  <div class="grid three"><div class="field"><label>Folder / Collection</label><select data-key="media.folder"><option>General</option><option>Home</option><option>Products</option><option>Services</option><option>News</option></select></div><div class="field"><label>Image Title</label><input data-key="media.title"></div><div class="field"><label>Alt Text</label><input data-key="media.alt"></div></div>
+ </div></div>
+</section>
+
+<section class="view" id="seo">
+ <div class="intro"><div><div class="eyebrow">Website Settings</div><h3>SEO / Page Settings</h3></div><p>Standard metadata fields for the backend to persist later.</p></div>
+ <div class="box"><div class="box-body grid">
+  <div class="field"><label>Page</label><select data-key="seo.page"><option>Home</option><option>About Us</option><option>Brochure</option><option>Career</option><option>Certifications</option><option>News</option><option>Products</option><option>Services</option><option>Team</option></select></div>
+  <div class="field"><label>Browser Title</label><input data-key="seo.title"></div>
+  <div class="field full"><label>Meta Description</label><textarea data-key="seo.description"></textarea></div>
+  <div class="field"><label>Slug / URL</label><input data-key="seo.slug"></div>
+  <div class="field"><label>Indexing</label><select data-key="seo.indexing"><option>index, follow</option><option>noindex, follow</option><option>noindex, nofollow</option></select></div>
+ </div></div>
+</section>
+
+</div>
+</main>
+</div>
+<div class="toast" id="toast">Saved</div>
+
+<script>
+const PAGES={"home": {"label": "Home", "sections": ["Hero", "Why Clients Trust Sinsina", "About Us", "From Design to Delivery", "Scale / Facility", "Our Capabilities", "Proven Project by Project", "Trusted Across Industries", "See Sinsina at Work", "Let’s Engineer What’s Next"]}, "about": {"label": "About Us", "sections": ["About Hero", "Company Overview", "Vision & Mission", "From Design to Delivery"]}, "brochure": {"label": "Brochure", "sections": ["Hero", "Brochure / Company Profile", "Download / CTA"]}, "career": {"label": "Career", "sections": ["Career Hero", "Careers Content", "Application / Contact"]}, "certifications": {"label": "Certifications", "sections": ["Certifications Hero", "Certificates", "Approvals / Clients"]}, "news": {"label": "News", "sections": ["News Intro", "Featured News", "News Feed", "More from Sinsina"]}, "products": {"label": "Products", "sections": ["Products Intro", "Product Index", "Products Section", "Product Cards"]}, "services": {"label": "Services", "sections": ["Services Hero", "Execution Strip", "Industries", "Difference / CTA"]}, "team": {"label": "Team", "sections": ["Team Hero", "Leadership & Organization", "Top Leadership", "Management Groups"]}};
+const groups=["Content","Images","Typography","Colors","Spacing","Layout"];
+let currentPage="home";
+
+function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function showView(id,title){
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ document.getElementById(id).classList.add("active");document.getElementById("topTitle").textContent=title;
+}
+function setActive(btn){document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active")}
+const nav=document.getElementById("pageNav");
+Object.entries(PAGES).forEach(([key,p],i)=>{
+ const b=document.createElement("button");b.className="nav-btn";b.innerHTML=`${p.label} <span>${String(i+2).padStart(2,"0")}</span>`;
+ b.onclick=()=>{setActive(b);currentPage=key;renderPage(key);showView("pageEditor",p.label+" Editor")};nav.appendChild(b)
+});
+document.querySelectorAll(".nav-btn[data-view]").forEach(b=>b.onclick=()=>{setActive(b);showView(b.dataset.view,b.textContent.replace(/\d+$/,"").trim())});
+
+function genericContent(key,section){
+ const base=`${key}.${slug(section)}`;
+ return `
+ <div class="tabs">${groups.map((g,i)=>`<button type="button" class="tab ${i===0?"active":""}" data-tab="${slug(g)}">${g}</button>`).join("")}</div>
+ <div class="subpanel active" data-panel="content">
+   <div class="grid">
+    <div class="field full"><label>Section Heading</label><input data-key="${base}.heading" placeholder="${esc(section)} heading"></div>
+    <div class="field full"><label>Description / Body Copy</label><textarea data-key="${base}.description" placeholder="Section description"></textarea></div>
+    <div class="field"><label>Eyebrow / Label</label><input data-key="${base}.eyebrow"></div>
+    <div class="field"><label>Button Text</label><input data-key="${base}.cta.label"></div>
+    <div class="field full"><label>Button Link</label><input data-key="${base}.cta.href"></div>
+   </div>
+ </div>
+ <div class="subpanel" data-panel="images">
+  <div class="media-row"><div class="preview"><span style="font-size:9px;color:#7b909b">IMAGE PREVIEW</span></div><div>
+   <div class="field"><label>Image File</label><input type="file" accept="image/*" data-key="${base}.image.file"></div>
+   <div class="field"><label>Current Image Path</label><input data-key="${base}.image.src"></div>
+   <div class="grid"><div class="field"><label>Object Fit</label><select data-key="${base}.image.fit"><option>cover</option><option>contain</option><option>fill</option></select></div><div class="field"><label>Position</label><input value="center center" data-key="${base}.image.position"></div></div>
+   <div class="field"><label>Alt Text</label><input data-key="${base}.image.alt"></div>
+   <div class="field"><label>Background Image Path</label><input data-key="${base}.backgroundImage"></div>
+  </div></div>
+ </div>
+ <div class="subpanel" data-panel="typography">
+  <div class="grid four">
+   <div class="field"><label>Heading Font</label><select data-key="${base}.typography.heading.font"><option>Inter</option><option>Arial</option><option>Segoe UI</option><option>Georgia</option></select></div>
+   <div class="field"><label>Heading Size</label><input type="number" data-key="${base}.typography.heading.size"></div>
+   <div class="field"><label>Heading Weight</label><select data-key="${base}.typography.heading.weight"><option>400</option><option>500</option><option>600</option><option>700</option><option>800</option><option>900</option></select></div>
+   <div class="field"><label>Heading Line Height</label><input type="number" step=".05" data-key="${base}.typography.heading.lineHeight"></div>
+   <div class="field"><label>Body Font</label><select data-key="${base}.typography.body.font"><option>Inter</option><option>Arial</option><option>Segoe UI</option><option>Georgia</option></select></div>
+   <div class="field"><label>Body Size</label><input type="number" data-key="${base}.typography.body.size"></div>
+   <div class="field"><label>Letter Spacing</label><input type="number" step=".1" data-key="${base}.typography.letterSpacing"></div>
+   <div class="field"><label>Text Align</label><select data-key="${base}.typography.align"><option>left</option><option>center</option><option>right</option><option>justify</option></select></div>
+  </div>
+ </div>
+ <div class="subpanel" data-panel="colors">
+  <div class="grid four">
+   <div class="field"><label>Heading Color</label><input type="color" value="#102d46" data-key="${base}.colors.heading"></div>
+   <div class="field"><label>Text Color</label><input type="color" value="#687c89" data-key="${base}.colors.text"></div>
+   <div class="field"><label>Background Color</label><input type="color" value="#ffffff" data-key="${base}.colors.background"></div>
+   <div class="field"><label>Accent Color</label><input type="color" value="#087db8" data-key="${base}.colors.accent"></div>
+  </div>
+ </div>
+ <div class="subpanel" data-panel="spacing">
+  <div class="grid four">
+   <div class="field"><label>Padding Top</label><input type="number" data-key="${base}.spacing.paddingTop"></div>
+   <div class="field"><label>Padding Bottom</label><input type="number" data-key="${base}.spacing.paddingBottom"></div>
+   <div class="field"><label>Padding Left / Right</label><input type="number" data-key="${base}.spacing.paddingX"></div>
+   <div class="field"><label>Gap</label><input type="number" data-key="${base}.spacing.gap"></div>
+   <div class="field"><label>Margin Top</label><input type="number" data-key="${base}.spacing.marginTop"></div>
+   <div class="field"><label>Margin Bottom</label><input type="number" data-key="${base}.spacing.marginBottom"></div>
+   <div class="field"><label>Min Height</label><input type="number" data-key="${base}.size.minHeight"></div>
+   <div class="field"><label>Max Width</label><input type="number" data-key="${base}.size.maxWidth"></div>
+  </div>
+ </div>
+ <div class="subpanel" data-panel="layout">
+  <div class="grid four">
+   <div class="field"><label>Layout</label><select data-key="${base}.layout.display"><option>block</option><option>flex</option><option>grid</option></select></div>
+   <div class="field"><label>Columns</label><input type="number" min="1" max="12" value="1" data-key="${base}.layout.columns"></div>
+   <div class="field"><label>Border Radius</label><input type="number" value="0" data-key="${base}.layout.radius"></div>
+   <div class="field"><label>Border Width</label><input type="number" value="0" data-key="${base}.layout.borderWidth"></div>
+   <div class="field"><label>Opacity %</label><input type="number" min="0" max="100" value="100" data-key="${base}.layout.opacity"></div>
+   <div class="field"><label>Position</label><select data-key="${base}.layout.position"><option>static</option><option>relative</option><option>absolute</option><option>sticky</option></select></div>
+   <div class="field"><label>Z Index</label><input type="number" data-key="${base}.layout.zIndex"></div>
+   <div class="field"><label>Visibility</label><select data-key="${base}.visible"><option value="true">Visible</option><option value="false">Hidden</option></select></div>
+  </div>
+ </div>`;
+}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")}
+function renderPage(key){
+ const p=PAGES[key];document.getElementById("pageName").textContent=p.label;
+ document.getElementById("sectionList").innerHTML=p.sections.map((s,i)=>`
+ <div class="section-card ${i===0?"open":""}">
+  <button type="button" class="section-trigger"><strong>${esc(s)}</strong><span>SECTION ${String(i+1).padStart(2,"0")} +</span></button>
+  <div class="section-body">${genericContent(key,s)}</div>
+ </div>`).join("");
+ bindSectionUI();
+}
+function bindSectionUI(){
+ document.querySelectorAll(".section-trigger").forEach(b=>b.onclick=()=>b.closest(".section-card").classList.toggle("open"));
+ document.querySelectorAll(".section-card").forEach(card=>{
+  card.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+   card.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");
+   card.querySelectorAll(".subpanel").forEach(x=>x.classList.remove("active"));
+   card.querySelector(`[data-panel="${t.dataset.tab}"]`).classList.add("active");
+  });
+ });
+}
+function collectData(){
+ const data={};document.querySelectorAll("[data-key]").forEach(el=>{
+  if(el.type==="file")return;data[el.dataset.key]=el.type==="checkbox"?el.checked:el.value;
+ });
+ console.log("SIW CMS FRONTEND DATA",data);
+ alert("The form data object was printed to the browser console.\n\nThis is the object your colleague can send to an API/database.");
+ return data;
+}
+function fakeSave(){collectData();showToast("Frontend form ready — backend save can be connected later.")}
+function resetForm(){if(confirm("Reset current frontend form values?"))location.reload()}
+function showToast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+document.querySelectorAll('input[type="color"]').forEach(c=>c.oninput=()=>{const m=document.querySelector(`[data-mirror="${c.id}"]`);if(m)m.value=c.value});
+document.querySelectorAll("[data-mirror]").forEach(m=>m.onchange=()=>{const c=document.getElementById(m.dataset.mirror);if(c)c.value=m.value});
+renderPage("home");
+</script>
+</body></html>

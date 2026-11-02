@@ -1,0 +1,306 @@
+/* =========================================================
+   SIW GLOBAL RESPONSIVE SAFETY LAYER — 2026-11-01
+   Keeps existing visual identity while normalizing layout
+   across desktop, laptop, tablet and mobile viewports.
+========================================================= */
+
+html{max-width:100%;overflow-x:hidden}
+body{max-width:100%;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+img,video,svg,canvas,iframe{max-width:100%;height:auto}
+input,textarea,select,button{max-width:100%;font:inherit}
+textarea{resize:vertical}
+
+/* Let grid/flex children shrink instead of forcing horizontal overflow. */
+.container,
+[class*="grid"],
+[class*="layout"],
+[class*="shell"],
+[class*="copy"],
+[class*="content"],
+[class*="card"],
+[class*="inner"]{min-width:0}
+
+.container,
+.siw-shared-nav,
+.siw-footer-container{
+  width:min(1180px,calc(100% - 48px)) !important;
+}
+
+h1,h2,h3,h4,p,a,span,strong{overflow-wrap:break-word}
+
+/* Shared header/footer safety */
+.siw-shared-header,.site-header{max-width:100vw}
+.siw-shared-links,.nav-links{min-width:0}
+.siw-footer-top,.footer-top{min-width:0}
+
+/* Forms */
+form{max-width:100%}
+.form-row{min-width:0}
+.form-group{min-width:0}
+.form-group input,.form-group textarea,.form-group select{width:100%}
+
+/* Tables / wide content */
+table{max-width:100%}
+
+/* =========================================================
+   LARGE LAPTOPS / SMALL DESKTOPS
+========================================================= */
+@media (max-width:1366px){
+  .container,
+  .siw-shared-nav,
+  .siw-footer-container{width:min(1120px,calc(100% - 44px)) !important}
+
+  .siw-shared-links,.nav-links{gap:18px !important}
+
+  .products-hero-copy h1,
+  .news-simple-hero h1,
+  .career-v3-copy h1,
+  .cert-new-hero h1,
+  .clients-hero h1{font-size:clamp(40px,5vw,64px) !important}
+
+  .catalog-grid{gap:14px !important}
+  .capabilities-grid{gap:10px !important}
+}
+
+/* Short laptop screens: reduce vertical pressure. */
+@media (min-width:901px) and (max-height:820px){
+  .products-hero,.news-simple-hero,.career-v3-hero,.cert-new-hero,.clients-hero{
+    min-height:auto !important;
+  }
+
+  .products-hero,.career-v3-hero{padding-top:82px !important}
+  .news-simple-hero,.cert-new-hero,.clients-hero{padding-top:120px !important;padding-bottom:44px !important}
+
+  .catalog-section,.company-news-section,.career-v3-section,.cert-new-content,.clients-section{
+    padding-top:48px !important;padding-bottom:56px !important;
+  }
+
+  /* Contact scene on homepage */
+  .partnership-shell{
+    width:min(1120px,calc(100% - 70px)) !important;
+    column-gap:48px !important;
+    row-gap:16px !important;
+    padding-top:78px !important;
+    padding-bottom:28px !important;
+  }
+  .partnership-copy h2{font-size:clamp(40px,4.7vw,62px) !important;line-height:.94 !important}
+  .partnership-copy p{margin-top:14px !important;font-size:11px !important;line-height:1.5 !important}
+  .partnership-contact>div{padding:13px 0 !important}
+  .partnership-form{padding:18px 20px !important}
+  .partnership-form h3{margin-bottom:13px !important;font-size:18px !important}
+  .partnership-form .form-group{margin-bottom:9px !important}
+  .partnership-form .form-group textarea{min-height:68px !important;max-height:80px !important}
+}
+
+/* =========================================================
+   TABLET / 1024-ish
+========================================================= */
+@media (max-width:1050px){
+  .container,
+  .siw-shared-nav,
+  .siw-footer-container{width:calc(100% - 40px) !important}
+
+  /* Products */
+  .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .catalog-heading{grid-template-columns:1fr !important;gap:18px !important}
+
+  /* News */
+  .news-card-grid{grid-template-columns:1fr !important}
+  .news-card:first-child{grid-column:auto !important}
+
+  /* Services */
+  .capabilities-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .service-card,.service-card:nth-child(even){grid-template-columns:1fr 1fr !important}
+  .service-content{padding:34px 30px !important}
+
+  /* Career */
+  .career-v3-functions,.functions-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .career-v3-split,.career-v3-apply-grid{gap:36px !important}
+
+  /* Certifications / Clients */
+  .cert-new-row{grid-template-columns:72px 1fr 145px !important}
+  .group-companies-grid,.clients-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+
+  /* Brochure */
+  .process-grid{gap:14px !important}
+}
+
+/* =========================================================
+   TABLET PORTRAIT / MOBILE LANDSCAPE
+========================================================= */
+@media (max-width:900px){
+  .container,
+  .siw-shared-nav,
+  .siw-footer-container{width:calc(100% - 34px) !important}
+
+  /* Keep shared navigation usable. */
+  .siw-shared-menu,.menu-button{display:flex !important}
+
+  /* Products */
+  .products-hero-inner{grid-template-columns:1fr !important}
+  .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+
+  /* News */
+  .news-simple-hero-inner{grid-template-columns:1fr !important;gap:24px !important}
+  .news-card,.news-card:first-child{grid-template-columns:42% 58% !important}
+
+  /* Services */
+  .capabilities-overview-head{grid-template-columns:1fr !important;gap:20px !important}
+  .service-card,.service-card:nth-child(even){grid-template-columns:1fr !important}
+  .service-card:nth-child(even) .service-image,.service-card:nth-child(even) .service-content{order:initial !important}
+  .service-image{min-height:300px !important}
+  .service-content{min-height:auto !important}
+
+  /* Career */
+  .career-v3-split,.career-v3-heading,.career-v3-apply-grid,
+  .why-grid,.opportunities-head,.apply-grid{grid-template-columns:1fr !important;gap:24px !important}
+
+  /* Certifications */
+  .cert-new-row{grid-template-columns:66px 1fr 135px !important}
+
+  /* Clients */
+  .clients-head,.group-companies-head{grid-template-columns:1fr !important;gap:16px !important}
+
+  /* Brochure */
+  .process-grid{grid-template-columns:1fr !important}
+  .process-line,.process-progress{display:none !important}
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+@media (max-width:700px){
+  :root{--mobile-pad:18px}
+
+  .container,
+  .siw-shared-nav,
+  .siw-footer-container{width:calc(100% - 32px) !important}
+
+  h1{letter-spacing:-1.5px !important}
+
+  /* Global shared header */
+  .siw-shared-header,.site-header{height:70px !important}
+  .siw-shared-brand img,.brand img{width:125px !important;height:50px !important;object-fit:contain !important}
+  .siw-shared-links,.nav-links{top:70px !important;max-height:calc(100svh - 70px);overflow-y:auto}
+
+  /* Footer */
+  .siw-footer-top,.footer-top{grid-template-columns:1fr !important;gap:30px !important;padding-bottom:34px !important}
+  .siw-footer-brand{grid-column:auto !important}
+  .siw-footer-brandline{grid-template-columns:85px 1fr !important;gap:16px !important}
+  .siw-footer-brand img{width:85px !important}
+  .siw-footer-bottom,.footer-bottom{flex-direction:column !important;align-items:flex-start !important;gap:8px !important}
+
+  /* Products */
+  .products-page{padding-top:70px !important}
+  .products-hero{min-height:auto !important;padding:54px 0 !important}
+  .products-hero-copy h1{font-size:clamp(36px,11vw,50px) !important;line-height:1 !important}
+  .products-hero-copy p{font-size:12px !important;line-height:1.65 !important}
+  .catalog-section{padding:48px 0 58px !important}
+  .catalog-grid{grid-template-columns:1fr !important}
+  .catalog-card{min-height:0 !important}
+  .catalog-visual{min-height:210px !important}
+  .catalog-copy{padding:22px 18px !important}
+
+  /* News */
+  .news-page{padding-top:70px !important}
+  .news-simple-hero{padding:52px 0 40px !important}
+  .news-simple-hero h1{font-size:clamp(36px,11vw,50px) !important;letter-spacing:-1.5px !important}
+  .company-news-section{padding:48px 0 58px !important}
+  .news-card,.news-card:first-child{grid-template-columns:1fr !important;min-height:0 !important}
+  .news-card-image{min-height:220px !important}
+  .news-card:first-child h2,.news-card h2{font-size:22px !important}
+  .news-card-body{padding:20px !important}
+
+  /* Services */
+  .services-page{padding-top:70px !important}
+  .services-hero-v2{grid-template-columns:1fr !important;min-height:auto !important}
+  .hero-v2-left{min-height:430px !important}
+  .hero-v2-inner{width:calc(100% - 34px) !important;margin:0 auto !important;padding:54px 0 !important}
+  .hero-v2-inner h1{font-size:clamp(40px,12vw,58px) !important;letter-spacing:-2px !important}
+  .hero-v2-visual{min-height:280px !important}
+  .execution-strip-inner{grid-template-columns:1fr !important}
+  .execution-strip-inner::before{display:none !important}
+  .execution-stage{min-height:64px !important}
+  .capabilities-overview{padding:42px 0 48px !important}
+  .capabilities-grid{grid-template-columns:1fr !important}
+  .capability-card{min-height:auto !important}
+  .service-image{min-height:230px !important}
+  .service-content{padding:28px 20px 30px !important}
+  .service-content h3{font-size:34px !important;letter-spacing:-1.8px !important}
+  .service-list{grid-template-columns:1fr !important}
+
+  /* Career */
+  .career-page{padding-top:70px !important}
+  .career-v3-hero,.career-hero{min-height:auto !important;padding:54px 0 !important}
+  .career-v3-copy h1,.hero-copy h1{font-size:clamp(34px,10vw,46px) !important;line-height:1.03 !important}
+  .career-v3-section,.section{padding:48px 0 !important}
+  .career-v3-functions,.functions-grid{grid-template-columns:1fr !important}
+  .career-v3-functions article,.function-card{min-height:105px !important}
+  .career-v3-form-grid,.form-grid{grid-template-columns:1fr !important}
+  .career-v3-form-card,.form-card{padding:20px 16px !important}
+
+  /* Certifications */
+  .cert-new-section{padding-top:70px !important}
+  .cert-new-hero{padding:50px 0 38px !important}
+  .cert-new-hero h1{font-size:clamp(36px,11vw,50px) !important}
+  .cert-new-content{width:calc(100% - 32px) !important;padding:38px 0 50px !important}
+  .cert-new-row{grid-template-columns:56px 1fr !important;min-height:0 !important}
+  .cert-new-number{font-size:19px !important}
+  .cert-new-info{padding:18px !important}
+  .cert-new-info h2{font-size:20px !important}
+  .cert-new-meta{grid-template-columns:1fr !important;gap:9px !important;margin-top:14px !important}
+  .cert-new-preview{grid-column:1/-1 !important;height:125px !important}
+  .cert-new-preview img{max-height:96px !important}
+
+  /* Clients */
+  .clients-hero{padding:120px 0 48px !important}
+  .clients-hero h1{font-size:clamp(36px,11vw,50px) !important}
+  .clients-section{padding:48px 0 60px !important}
+  .clients-grid,.group-companies-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important}
+  .client-card,.group-company-card{height:112px !important;padding:14px !important}
+  .client-card img,.group-company-card img{max-width:100px !important;max-height:58px !important}
+
+  /* Brochure */
+  .approach-hero{min-height:auto !important;padding-top:110px !important;padding-bottom:50px !important}
+  .approach{padding:54px 0 !important}
+  .section-title{font-size:clamp(34px,10vw,48px) !important;letter-spacing:-1.5px !important}
+  .process-card{min-height:auto !important}
+
+  /* Homepage full-screen slides: allow the contact slide to scroll internally. */
+  .partnership-scene{overflow-y:auto !important;-webkit-overflow-scrolling:touch !important}
+  .partnership-shell{
+    width:calc(100% - 32px) !important;
+    height:auto !important;
+    min-height:100svh !important;
+    grid-template-columns:1fr !important;
+    grid-template-areas:"copy" "contact" "form" !important;
+    gap:18px !important;
+    align-content:start !important;
+    padding-top:88px !important;
+    padding-bottom:78px !important;
+  }
+  .partnership-copy{grid-area:copy !important}
+  .partnership-copy h2{font-size:clamp(34px,11vw,48px) !important;line-height:.98 !important;letter-spacing:-1.7px !important}
+  .partnership-copy p{margin-top:12px !important;font-size:11px !important;line-height:1.55 !important}
+  .partnership-contact{grid-area:contact !important;display:grid !important;grid-template-columns:1fr !important;border-left:0 !important;border-top:1px solid rgba(255,255,255,.14) !important;border-bottom:1px solid rgba(255,255,255,.14) !important;padding:0 !important}
+  .partnership-contact>div{padding:10px 0 !important;border-right:0 !important;border-bottom:1px solid rgba(255,255,255,.10) !important}
+  .partnership-form{grid-area:form !important;width:100% !important;max-width:none !important;margin:0 !important;padding:18px 16px !important}
+  .partnership-form h3{font-size:20px !important}
+  .partnership-form .form-row{grid-template-columns:1fr !important;gap:0 !important}
+  .partnership-form .form-group label{font-size:11px !important}
+  .partnership-form .form-group input,.partnership-form .form-group textarea{font-size:16px !important}
+  .partnership-form .contact-submit{width:100% !important;justify-content:center !important;min-height:44px !important;font-size:13px !important}
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+@media (max-width:480px){
+  .container,.siw-shared-nav,.siw-footer-container{width:calc(100% - 24px) !important}
+  .clients-grid,.group-companies-grid{grid-template-columns:1fr !important}
+  .client-card,.group-company-card{height:105px !important}
+  .catalog-actions,.news-card-actions{flex-wrap:wrap !important}
+  .siw-footer-brandline{grid-template-columns:1fr !important}
+  .siw-footer-brand img{width:95px !important}
+}

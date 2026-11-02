@@ -50,6 +50,7 @@ const dynamicConfig={
  products:{container:'.catalog-grid',item:'.catalog-card',singular:'Product',plural:'Products'},
  clients:{container:'.clients-grid',item:'.client-card',singular:'Client',plural:'Clients'},
  news:{container:'.news-card-grid',item:'.news-card',singular:'News item',plural:'News'},
+ career:{container:'.functions-grid',item:'.function-card',singular:'Career function',plural:'Career functions'},
  team:{container:null,item:'.top-person, .directory-row',singular:'Team member',plural:'Team members'},
  certifications:{container:null,item:'.cert-new-row',singular:'Certification',plural:'Certifications'},
  services:{container:null,item:'.service-card',singular:'Service',plural:'Services'}
@@ -219,9 +220,9 @@ function getCollection(){const value=pageEdits.__collection;return value&&Array.
 function currentDynamicConfig(){return dynamicConfig[current]||null}
 function itemFields(el){
  const heading=el.querySelector('h1,h2,h3,h4,strong');
- const text=el.querySelector('p');
+ const text=el.querySelector('p,.role-title');
  const image=el.querySelector('img');
- const link=el.querySelector('a');
+ const link=el.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)')||el.querySelector('a');
  const parent=el.parentElement;
  const parentSelector=parent?stableSelector(parent):'';
  return {title:(heading?heading.textContent:text?text.textContent:image?image.alt:'').trim().replace(/\s+/g,' '),text:text?text.textContent.trim().replace(/\s+/g,' '):'',image:image?image.getAttribute('src')||'':'',alt:image?image.getAttribute('alt')||'':'',link:link?link.getAttribute('href')||'':'',linkText:link?link.textContent.trim().replace(/\s+/g,' '):'',container:parentSelector,template:el.cloneNode(true).outerHTML};
@@ -265,9 +266,9 @@ function applyCollectionToPreview(){
   holder.innerHTML=itemData.template||'';
   const item=holder.firstElementChild;if(!item)return;
   const title=item.querySelector('h1,h2,h3,h4,strong');
-  const text=item.querySelector('p');
+  const text=item.querySelector('p,.role-title');
   const image=item.querySelector('img');
-  const link=item.querySelector('a');
+  const link=item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)')||item.querySelector('a');
   if(title&&typeof itemData.title==='string')title.textContent=itemData.title;
   if(text&&typeof itemData.text==='string')text.textContent=itemData.text;
   if(image&&typeof itemData.image==='string')image.setAttribute('src',itemData.image);

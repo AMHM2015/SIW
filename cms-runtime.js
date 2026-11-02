@@ -62,9 +62,9 @@
                         }
                         if (!target) target = container;
                         const title = item.querySelector('h1,h2,h3,h4,strong');
-                        const text = item.querySelector('p');
+                        const text = item.querySelector('p,.role-title');
                         const image = item.querySelector('img');
-                        const link = item.querySelector('a');
+                        const link = item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)') || item.querySelector('a');
                         if (title && typeof itemData.title === 'string') title.textContent = itemData.title;
                         if (text && typeof itemData.text === 'string') text.textContent = itemData.text;
                         if (image) {

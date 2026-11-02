@@ -53,6 +53,14 @@
                         holder.innerHTML = itemData.template || template;
                         const item = holder.firstElementChild;
                         if (!item) return;
+                        let target = null;
+                        if (collection.container) {
+                            try { target = document.querySelector(collection.container); } catch (_) {}
+                        }
+                        if (!target && itemData.container) {
+                            try { target = document.querySelector(itemData.container); } catch (_) {}
+                        }
+                        if (!target) target = container;
                         const title = item.querySelector('h1,h2,h3,h4,strong');
                         const text = item.querySelector('p');
                         const image = item.querySelector('img');
@@ -67,7 +75,7 @@
                             if (typeof itemData.link === 'string' && itemData.link) link.setAttribute('href', itemData.link);
                             if (typeof itemData.linkText === 'string' && itemData.linkText) link.textContent = itemData.linkText;
                         }
-                        container.appendChild(item);
+                        target.appendChild(item);
                     });
                 }
             }

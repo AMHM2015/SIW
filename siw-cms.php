@@ -107,7 +107,7 @@ function showApp(){
  $('mediaModal').onclick=event=>{if(event.target===$('mediaModal'))closeMedia()};
  $('addDynamicBtn').onclick=addDynamic;$('saveDynamicBtn').onclick=saveDynamic;$('deleteFieldBtn').onclick=deleteFieldEdit;
  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMedia()});
- $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=scanPreview;
+ $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=()=>{scanPreview();setTimeout(scanPreview,200);setTimeout(scanPreview,700)};
  selectPage(current);
 }
 async function selectPage(page){
@@ -205,7 +205,9 @@ async function savePage(){
  try{
   await api('save-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current,elements:pageEdits})});
   await api('save-seo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current,title:$('seoTitle').value,description:$('seoDescription').value})});
-  allData[current]=pageEdits;notify('Changes saved');
+  allData[current]=pageEdits;
+  $('preview').src=$('preview').src;
+  notify('Changes saved');
  }catch(error){notify(error.message)}
 }
 async function resetPage(){
@@ -220,7 +222,9 @@ function itemFields(el){
  const text=el.querySelector('p');
  const image=el.querySelector('img');
  const link=el.querySelector('a');
- return {title:(heading?heading.textContent:text?text.textContent:'').trim().replace(/\s+/g,' '),text:text?text.textContent.trim().replace(/\s+/g,' '):'',image:image?image.getAttribute('src')||'':'',alt:image?image.getAttribute('alt')||'':'',link:link?link.getAttribute('href')||'':'',linkText:link?link.textContent.trim().replace(/\s+/g,' '):'',template:el.cloneNode(true).outerHTML};
+ const parent=el.parentElement;
+ const parentSelector=parent?stableSelector(parent):'';
+ return {title:(heading?heading.textContent:text?text.textContent:image?image.alt:'').trim().replace(/\s+/g,' '),text:text?text.textContent.trim().replace(/\s+/g,' '):'',image:image?image.getAttribute('src')||'':'',alt:image?image.getAttribute('alt')||'':'',link:link?link.getAttribute('href')||'':'',linkText:link?link.textContent.trim().replace(/\s+/g,' '):'',container:parentSelector,template:el.cloneNode(true).outerHTML};
 }
 function renderDynamicItems(){
  const config=currentDynamicConfig(),collection=getCollection();$('dynamicTitle').textContent=config?config.plural:'Dynamic items';
@@ -237,16 +241,47 @@ function ensureCollectionFromPreview(){
  const config=currentDynamicConfig(),collection=getCollection();
  if(config&&collection.config===current)return collection;
  const doc=$('preview').contentDocument;if(!doc)return {config:null,items:[]};
- const nodes=Array.from(doc.querySelectorAll(config.item)).filter(el=>el.offsetParent!==null&&!el.closest('header,footer,nav'));
+ if(!config)return {config:null,items:[]};
+ const nodes=Array.from(doc.querySelectorAll(config.item)).filter(el=>!el.closest('header,footer,nav,script,style'));
  const items=nodes.map(itemFields);
  pageEdits.__collection={config:current,container:config.container,item:config.item,items};
  return pageEdits.__collection;
 }
+function applyCollectionToPreview(){
+ const collection=getCollection(),doc=$('preview').contentDocument;if(!doc||!collection.items)return;
+ const config=currentDynamicConfig();if(!config)return;
+ Array.from(doc.querySelectorAll(config.item)).forEach(item=>item.remove());
+ collection.items.forEach(itemData=>{
+  let container=null;
+  if(collection.container)container=doc.querySelector(collection.container);
+  if(!container&&itemData.container){try{container=doc.querySelector(itemData.container)}catch(_){container=null}}
+  if(!container&&collection.items.length===1)container=null;
+  if(!container){
+   const existing=Array.from(doc.querySelectorAll(config.item)).find(Boolean);
+   container=existing?.parentElement||null;
+  }
+  if(!container)return;
+  const holder=doc.createElement('div');
+  holder.innerHTML=itemData.template||'';
+  const item=holder.firstElementChild;if(!item)return;
+  const title=item.querySelector('h1,h2,h3,h4,strong');
+  const text=item.querySelector('p');
+  const image=item.querySelector('img');
+  const link=item.querySelector('a');
+  if(title&&typeof itemData.title==='string')title.textContent=itemData.title;
+  if(text&&typeof itemData.text==='string')text.textContent=itemData.text;
+  if(image&&typeof itemData.image==='string')image.setAttribute('src',itemData.image);
+  if(image&&typeof itemData.alt==='string')image.setAttribute('alt',itemData.alt);
+  if(link&&typeof itemData.link==='string')link.setAttribute('href',itemData.link);
+  if(link&&typeof itemData.linkText==='string')link.textContent=itemData.linkText;
+  container.appendChild(item);
+ });
+}
 function addDynamic(){
  const config=currentDynamicConfig();if(!config)return;
  const collection=ensureCollectionFromPreview(),template=collection.items[0]?collection.items[0].template:null;
- const item={title:'New '+config.singular.toLowerCase(),text:'Add description here.',image:'',alt:'',link:'#',linkText:'View',template:template||''};
- collection.items.push(item);pageEdits.__collection=collection;selectedDynamic=collection.items.length-1;renderDynamicItems();editDynamic(selectedDynamic);notify(config.singular+' added. Save changes to publish.');
+ const item={title:'New '+config.singular.toLowerCase(),text:'Add description here.',image:'',alt:'',link:'#',linkText:'View',container:collection.items[0]?.container||'',template:template||''};
+ collection.items.push(item);pageEdits.__collection=collection;selectedDynamic=collection.items.length-1;renderDynamicItems();editDynamic(selectedDynamic);applyCollectionToPreview();notify(config.singular+' added. Save changes to publish.');
 }
 function editDynamic(index){
  const collection=getCollection(),item=collection.items[index];if(!item)return;
@@ -257,15 +292,15 @@ function editDynamic(index){
 function saveDynamic(){
  const collection=getCollection();if(selectedDynamic===null||!collection.items[selectedDynamic])return notify('Select or add an item first');
  Object.assign(collection.items[selectedDynamic],{title:$('dynamicTitleField').value,text:$('dynamicTextField').value,image:$('dynamicImageField').value,alt:$('dynamicAltField').value,link:$('dynamicLinkField').value,linkText:$('dynamicLinkTextField').value});
- pageEdits.__collection=collection;renderDynamicItems();notify('Item updated. Save changes to publish.');
+ pageEdits.__collection=collection;renderDynamicItems();applyCollectionToPreview();notify('Item updated. Save changes to publish.');
 }
 function deleteDynamic(index){
  if(!confirm('Delete this item permanently from the page?'))return;
- const collection=getCollection();collection.items.splice(index,1);pageEdits.__collection=collection;selectedDynamic=null;$('dynamicEditor').classList.remove('active');renderDynamicItems();notify('Item removed. Save changes to publish.');
+ const collection=getCollection();collection.items.splice(index,1);pageEdits.__collection=collection;selectedDynamic=null;$('dynamicEditor').classList.remove('active');renderDynamicItems();applyCollectionToPreview();notify('Item removed. Save changes to publish.');
 }
 function moveDynamic(index,offset){
  const collection=getCollection(),target=index+offset;if(target<0||target>=collection.items.length)return;
- const item=collection.items.splice(index,1)[0];collection.items.splice(target,0,item);pageEdits.__collection=collection;selectedDynamic=target;renderDynamicItems();notify('Item order changed. Save changes to publish.');
+ const item=collection.items.splice(index,1)[0];collection.items.splice(target,0,item);pageEdits.__collection=collection;selectedDynamic=target;renderDynamicItems();applyCollectionToPreview();notify('Item order changed. Save changes to publish.');
 }
 function deleteFieldEdit(){
  if(!selected)return notify('Select a field first');

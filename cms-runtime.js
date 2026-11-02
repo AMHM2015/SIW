@@ -12,6 +12,14 @@
             const value = pageData[selector];
             if (value && typeof value.text === 'string') element.textContent = value.text;
             if (value && typeof value.html === 'string') element.innerHTML = value.html;
+            if (value && typeof value.fontFamily === 'string') element.style.fontFamily = value.fontFamily;
+            if (value && typeof value.fontSize === 'string') element.style.fontSize = value.fontSize;
+            if (value && typeof value.fontWeight === 'string') element.style.fontWeight = value.fontWeight;
+            if (value && typeof value.fontStyle === 'string') element.style.fontStyle = value.fontStyle;
+            if (value && typeof value.textAlign === 'string') element.style.textAlign = value.textAlign;
+            if (value && typeof value.color === 'string') element.style.color = value.color;
+            if (value && typeof value.lineHeight === 'string') element.style.lineHeight = value.lineHeight;
+            if (value && typeof value.textTransform === 'string') element.style.textTransform = value.textTransform;
             if (value && typeof value.href === 'string') element.setAttribute('href', value.href);
             if (value && typeof value.src === 'string') element.setAttribute('src', value.src);
             if (value && typeof value.alt === 'string') element.setAttribute('alt', value.alt);

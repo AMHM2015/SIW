@@ -3773,6 +3773,7 @@ body{
 </style>
 
     <link rel="stylesheet" href="responsive-fix.css">
+    <link rel="stylesheet" href="about/hero.css">
 </head>
 
 
@@ -3876,11 +3877,11 @@ body{
     
 <main class="news-page">
 
-    <section class="news-simple-hero">
-        <div class="container news-simple-hero-inner">
-            <div>
-                <h1>News &amp; Media</h1>
-                <p>
+    <section id="page-hero" class="news-simple-hero" data-page="news">
+        <div class="container news-simple-hero-inner page-hero__container">
+            <div class="page-hero__copy">
+                <h1 class="page-hero__title">News &amp; Media</h1>
+                <p class="page-hero__description">
                     Official company updates, project milestones, people stories
                     and corporate news from Sinsina Industrial Works.
                 </p>
@@ -3889,7 +3890,7 @@ body{
             <a href="https://www.linkedin.com/company/sinsinaworks/"
                target="_blank"
                rel="noopener noreferrer"
-               class="linkedin-news-link">
+               class="linkedin-news-link page-hero__action">
                 View SIW on LinkedIn
                 <span>↗</span>
             </a>

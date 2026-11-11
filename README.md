@@ -51,12 +51,13 @@ Deleting an item takes effect on the website after **Save changes**. Check the p
 The **About Us** page has a **Leadership cards** list in the right-hand panel. It starts with the seven current SIW leaders. To edit one, select its name in the list or click its card in the middle preview.
 
 - **Add a card:** choose **+ Add**, enter the person's name, and choose **Save item**.
+- **Add or change a position:** enter the person's job title in **Position**. It appears in the text box above the card's photo. This works for existing cards and new cards; leave it blank if a position is not yet confirmed.
 - **Add or change a photo:** while editing a card, choose **Choose image**. Upload a new image in the media library if needed, then select **Use image** on the photo you want. Add a useful alt description for accessibility.
 - **Finish editing:** choose **Save item** to update the preview, then **Save changes** at the top to publish.
 - **Reorder cards:** use the up and down arrows beside a name.
 - **Remove a card:** choose its delete button. Keep at least one leadership card.
 
-Leadership cards show a person's name and photo; they do not have a role or description field.
+Leadership cards show a person's position above the photo and their name below it.
 
 ## Update page title and description
 

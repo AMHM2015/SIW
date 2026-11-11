@@ -62,6 +62,11 @@
                         holder.innerHTML = itemData.template || template;
                         const item = holder.firstElementChild;
                         if (!item) return;
+                        if (collection.config === 'about' && !item.querySelector('.team-card-position')) {
+                            const position = document.createElement('div');
+                            position.className = 'team-card-position';
+                            item.prepend(position);
+                        }
                         let target = null;
                         if (collection.container) {
                             try { target = document.querySelector(collection.container); } catch (_) {}
@@ -71,7 +76,7 @@
                         }
                         if (!target) target = container;
                         const title = item.querySelector('h1,h2,h3,h4,strong');
-                        const text = item.querySelector('p,.role-title');
+                        const text = item.querySelector('.team-card-position,p,.role-title');
                         const image = item.querySelector('img');
                         const link = item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)') || item.querySelector('a');
                         if (title && typeof itemData.title === 'string') title.textContent = itemData.title;

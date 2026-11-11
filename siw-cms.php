@@ -32,7 +32,7 @@ button,input,textarea{font:inherit}.login{min-height:100vh;display:grid;place-it
  <main class="main"><header class="topbar"><strong id="pageTitle">Home</strong><div class="top-actions"><button class="danger" id="resetBtn">Reset page</button><button class="primary" id="saveBtn">Save changes</button></div></header><div class="preview"><iframe id="preview" title="Website page preview"></iframe></div></main>
  <aside class="inspector"><h3>Page inspector</h3>
   <div class="dynamic-manager"><div class="dynamic-head"><strong id="dynamicTitle">Dynamic items</strong><button class="add-button" id="addDynamicBtn">+ Add</button></div><div class="dynamic-list" id="dynamicList"><div class="media-empty" style="padding:14px">Select a page with repeatable content</div></div></div>
-  <div class="dynamic-editor" id="dynamicEditor"><h4 id="dynamicEditorTitle">Edit item</h4><div class="field"><label>Title / name</label><input id="dynamicTitleField"></div><div class="field"><label>Description / role / details</label><textarea id="dynamicTextField"></textarea></div><div class="field"><label>Image URL</label><input id="dynamicImageField"></div><div class="field"><label>Image alt text</label><input id="dynamicAltField"></div><div class="field"><label>Link URL</label><input id="dynamicLinkField"></div><div class="field"><label>Button / link text</label><input id="dynamicLinkTextField"></div><button class="primary" id="saveDynamicBtn" style="width:100%">Save item</button></div>
+  <div class="dynamic-editor" id="dynamicEditor"><h4 id="dynamicEditorTitle">Edit item</h4><div class="field"><label id="dynamicTitleLabel">Title / name</label><input id="dynamicTitleField"></div><div class="field" id="dynamicTextFieldWrap"><label>Description / role / details</label><textarea id="dynamicTextField"></textarea></div><div class="field"><label>Image URL</label><div style="display:flex;gap:6px"><input id="dynamicImageField"><button class="add-button" id="chooseDynamicImageBtn" type="button">Choose image</button></div></div><div class="field"><label>Image alt text</label><input id="dynamicAltField"></div><div class="field" id="dynamicLinkFieldWrap"><label>Link URL</label><input id="dynamicLinkField"></div><div class="field" id="dynamicLinkTextFieldWrap"><label>Button / link text</label><input id="dynamicLinkTextField"></div><button class="primary" id="saveDynamicBtn" style="width:100%">Save item</button></div>
   <div class="field"><label id="fieldsLabel">This page's fields</label><div class="element-list" id="elementList"></div></div>
   <div id="editorFields"><button class="delete-field" id="deleteFieldBtn">Delete selected field edit</button>
    <div class="field"><label>Selected text / HTML</label><textarea id="textValue" placeholder="Select a field from this page"></textarea></div>
@@ -62,8 +62,9 @@ button,input,textarea{font:inherit}.login{min-height:100vh;display:grid;place-it
 <div class="notice" id="notice"></div>
 <script>
 const pages=[['home','Home','index.html'],['about','About Us','about.html'],['brochure','Brochure','brochure.html'],['career','Career','career.html'],['certifications','Certifications','certifications.html'],['clients','Clients','clients.html'],['news','News','news.html'],['products','Products','products.html'],['services','Services','services.html'],['team','Team','team.html']];
-let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null;
+let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null,dynamicImagePicker=false;
 const dynamicConfig={
+ about:{container:'.team-leadership-row',item:'.team-leader-card',singular:'Leadership card',plural:'Leadership cards',simpleCards:true},
  products:{container:'.catalog-grid',item:'.catalog-card',singular:'Product',plural:'Products'},
  clients:{container:'.clients-grid',item:'.client-card',singular:'Client',plural:'Clients'},
  news:{container:'.news-card-grid',item:'.news-card',singular:'News item',plural:'News'},
@@ -121,7 +122,7 @@ function showApp(){
   try{await api('logout',{method:'GET',headers:{'Cache-Control':'no-store'}})}catch(error){/* Logout UI still resets locally. */}
   $('appView').classList.remove('active');$('loginView').classList.remove('hidden');$('password').value='';$('loginHelp').textContent='Enter the administrator password.';
  };
- $('mediaBtn').onclick=openMedia;$('mediaClose').onclick=closeMedia;$('mediaUploadBtn').onclick=uploadMedia;
+ $('mediaBtn').onclick=()=>openMedia();$('mediaClose').onclick=closeMedia;$('mediaUploadBtn').onclick=uploadMedia;$('chooseDynamicImageBtn').onclick=()=>openMedia(true);
  $('mediaModal').onclick=event=>{if(event.target===$('mediaModal'))closeMedia()};
  $('addDynamicBtn').onclick=addDynamic;$('saveDynamicBtn').onclick=saveDynamic;$('deleteFieldBtn').onclick=deleteFieldEdit;
  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMedia()});
@@ -335,7 +336,10 @@ function applyCollectionToPreview(){
   const link=item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)')||item.querySelector('a');
   if(title&&typeof itemData.title==='string')title.textContent=itemData.title;
   if(text&&typeof itemData.text==='string')text.textContent=itemData.text;
-  if(image&&typeof itemData.image==='string')image.setAttribute('src',itemData.image);
+  if(image&&typeof itemData.image==='string'){
+   if(itemData.image)image.setAttribute('src',itemData.image);
+   else image.removeAttribute('src');
+  }
   if(image&&typeof itemData.alt==='string')image.setAttribute('alt',itemData.alt);
   if(link&&typeof itemData.link==='string')link.setAttribute('href',itemData.link);
   if(link&&typeof itemData.linkText==='string')link.textContent=itemData.linkText;
@@ -350,7 +354,12 @@ function addDynamic(){
 }
 function editDynamic(index){
  const collection=getCollection(),item=collection.items[index];if(!item)return;
- selectedDynamic=index;$('dynamicEditor').classList.add('active');$('dynamicEditorTitle').textContent='Edit '+(dynamicConfig[current]?.singular||'item');
+ const config=currentDynamicConfig(),simpleCards=Boolean(config&&config.simpleCards);
+ selectedDynamic=index;$('dynamicEditor').classList.add('active');$('dynamicEditorTitle').textContent='Edit '+(config?.singular||'item');
+ $('dynamicTitleLabel').textContent=simpleCards?'Name':'Title / name';
+ $('dynamicTextFieldWrap').classList.toggle('hidden',simpleCards);
+ $('dynamicLinkFieldWrap').classList.toggle('hidden',simpleCards);
+ $('dynamicLinkTextFieldWrap').classList.toggle('hidden',simpleCards);
  $('dynamicTitleField').value=item.title||'';$('dynamicTextField').value=item.text||'';$('dynamicImageField').value=item.image||'';$('dynamicAltField').value=item.alt||'';$('dynamicLinkField').value=item.link||'';$('dynamicLinkTextField').value=item.linkText||'';
  renderDynamicItems();
  highlightDynamicPreview(index);
@@ -382,8 +391,8 @@ function deleteFieldEdit(){
  const selector=stableSelector(selected);delete pageEdits[selector];$('preview').src=$('preview').src;notify('Field edit removed. Save changes to publish.');
 }
 function publicMediaUrl(relativeUrl){return new URL(relativeUrl,window.location.href).href}
-function openMedia(){ $('mediaModal').classList.add('active');$('mediaModal').setAttribute('aria-hidden','false');loadMedia()}
-function closeMedia(){ $('mediaModal').classList.remove('active');$('mediaModal').setAttribute('aria-hidden','true')}
+function openMedia(forDynamicImage=false){ dynamicImagePicker=forDynamicImage;$('mediaModal').classList.add('active');$('mediaModal').setAttribute('aria-hidden','false');loadMedia()}
+function closeMedia(){ $('mediaModal').classList.remove('active');$('mediaModal').setAttribute('aria-hidden','true');dynamicImagePicker=false}
 async function loadMedia(){
  $('mediaGrid').innerHTML='<div class="media-empty">Loading media...</div>';
  try{
@@ -392,9 +401,11 @@ async function loadMedia(){
   $('mediaGrid').innerHTML=result.files.map(file=>{
    const url=publicMediaUrl(file.url),isVideo=/\.(mp4|webm|mov)$/i.test(file.url);
    const preview=isVideo?`<video src="${escapeHtml(url)}" muted></video>`:`<img src="${escapeHtml(url)}" alt="">`;
-   return `<article class="media-card"><div class="media-preview">${preview}</div><div class="media-info"><div class="media-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div><input class="media-url" readonly value="${escapeHtml(url)}"><div class="media-actions"><button class="primary" data-copy="${escapeHtml(file.url)}">Copy URL</button><button class="media-delete" data-delete="${escapeHtml(file.name)}">Delete</button></div></div></article>`;
+   const useImageButton=!isVideo&&dynamicImagePicker?`<button class="primary" data-use-image="${escapeHtml(file.url)}">Use image</button>`:'';
+    return `<article class="media-card"><div class="media-preview">${preview}</div><div class="media-info"><div class="media-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div><input class="media-url" readonly value="${escapeHtml(url)}"><div class="media-actions"><button class="primary" data-copy="${escapeHtml(file.url)}">Copy URL</button>${useImageButton}<button class="media-delete" data-delete="${escapeHtml(file.name)}">Delete</button></div></div></article>`;
   }).join('');
   document.querySelectorAll('[data-copy]').forEach(button=>button.onclick=()=>copyMediaUrl(button.dataset.copy,button));
+  document.querySelectorAll('[data-use-image]').forEach(button=>button.onclick=()=>{ $('dynamicImageField').value=publicMediaUrl(button.dataset.useImage);closeMedia();notify('Image selected. Save the card to apply it.')});
   document.querySelectorAll('[data-delete]').forEach(button=>button.onclick=()=>deleteMedia(button.dataset.delete));
  }catch(error){$('mediaGrid').innerHTML=`<div class="media-empty">${escapeHtml(error.message)}</div>`}
 }

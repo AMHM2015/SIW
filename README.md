@@ -46,6 +46,18 @@ Pages such as Products, Clients, News, Career, Team, Certifications, and Service
 
 Deleting an item takes effect on the website after **Save changes**. Check the page carefully before publishing.
 
+## Manage leadership cards
+
+The **About Us** page has a **Leadership cards** list in the right-hand panel. It starts with the seven current SIW leaders. To edit one, select its name in the list or click its card in the middle preview.
+
+- **Add a card:** choose **+ Add**, enter the person's name, and choose **Save item**.
+- **Add or change a photo:** while editing a card, choose **Choose image**. Upload a new image in the media library if needed, then select **Use image** on the photo you want. Add a useful alt description for accessibility.
+- **Finish editing:** choose **Save item** to update the preview, then **Save changes** at the top to publish.
+- **Reorder cards:** use the up and down arrows beside a name.
+- **Remove a card:** choose its delete button. Keep at least one leadership card.
+
+Leadership cards show a person's name and photo; they do not have a role or description field.
+
 ## Update page title and description
 
 The **SEO** fields are on the right side near the bottom:
@@ -60,7 +72,8 @@ Enter plain, accurate wording and choose **Save changes** at the top.
 1. Choose **Media library** on the left.
 2. Select an image or video file and choose **Upload**.
 3. When it appears in the library, choose **Copy URL**.
-4. Close the library, select the image or card you want to update, paste the URL into its **Image URL** field, choose **Apply to preview**, then **Save changes**.
+4. Close the library and select the image or item you want to update. For a leadership card, choose **Use image** directly in the library; for other items, paste the URL into the **Image URL** field and choose **Apply to preview**.
+5. Choose **Save item** when editing a card, then choose **Save changes** at the top to publish.
 
 The library accepts JPG, PNG, GIF, WebP, and AVIF images, and MP4, WebM, and MOV videos. The file limit is 100 MB.
 

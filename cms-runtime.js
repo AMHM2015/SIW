@@ -43,7 +43,8 @@
             }
         }
 
-        if (pageData.__collection && Array.isArray(pageData.__collection.items) && pageData.__collection.items.length >= 0) {
+        if (pageData.__collection && Array.isArray(pageData.__collection.items)
+            && !(pageData.__collection.config === 'about' && pageData.__collection.items.length === 0)) {
             const collection = pageData.__collection;
             const itemSelector = collection.item || '';
             const firstItem = itemSelector ? document.querySelector(itemSelector) : null;

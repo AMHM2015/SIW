@@ -137,13 +137,18 @@ async function selectPage(page){
  try{allData=await api('public')}catch(error){notify(error.message)}
  pageEdits=JSON.parse(JSON.stringify((allData&&allData[page])||{}));
  selectedDynamic=null;$('dynamicEditor').classList.remove('active');
- ensureCollectionFromPreview();renderDynamicItems();
+ renderDynamicItems();
  scanPreview();
 }
 function scanPreview(){
  let doc;try{doc=$('preview').contentDocument}catch(_){return}if(!doc)return;
+ const page=pages.find(item=>item[0]===current);
+ if(!page||doc.location.pathname.split('/').pop()!==page[2])return;
  ensurePreviewHighlightStyles(doc);
- ensureCollectionFromPreview();renderDynamicItems();
+ ensureCollectionFromPreview();
+ applyCollectionToPreview();
+ ensureDynamicCardClickHandler(doc);
+ renderDynamicItems();
  const original=(allData[current]||{}).__seo||{};
  $('seoTitle').value=original.title||doc.title||'';
  $('seoDescription').value=original.description||(doc.querySelector('meta[name="description"]')?.content||'');
@@ -182,6 +187,23 @@ function scanPreview(){
  });
  document.querySelectorAll('#elementList button').forEach(btn=>btn.onclick=()=>chooseElement(Number(btn.dataset.index)));
  $('elementList').querySelector('button')?.click();
+}
+function ensureDynamicCardClickHandler(doc){
+ if(doc.__siwCmsCardClickHandler)return;
+ doc.__siwCmsCardClickHandler=true;
+ doc.addEventListener('click',event=>{
+  const config=currentDynamicConfig();
+  if(!config)return;
+  const target=event.target&&typeof event.target.closest==='function'?event.target:null;
+  const card=target?.closest(config.item);
+  if(!card)return;
+  const cards=Array.from(doc.querySelectorAll(config.item));
+  const index=cards.indexOf(card);
+  if(index<0)return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  editDynamic(index);
+ },true);
 }
 function ensurePreviewHighlightStyles(doc){
  if(doc.getElementById('siw-cms-selection-styles'))return;
@@ -304,7 +326,7 @@ function renderDynamicItems(){
 }
 function ensureCollectionFromPreview(){
  const config=currentDynamicConfig(),collection=getCollection();
- if(config&&collection.config===current)return collection;
+ if(config&&collection.config===current&&!(config.simpleCards&&!collection.items.length))return collection;
  const doc=$('preview').contentDocument;if(!doc)return {config:null,items:[]};
  if(!config)return {config:null,items:[]};
  const nodes=Array.from(doc.querySelectorAll(config.item)).filter(el=>!el.closest('header,footer,nav,script,style'));
@@ -380,7 +402,9 @@ function saveDynamic(){
 }
 function deleteDynamic(index){
  if(!confirm('Delete this item permanently from the page?'))return;
- const collection=getCollection();collection.items.splice(index,1);pageEdits.__collection=collection;selectedDynamic=null;$('dynamicEditor').classList.remove('active');renderDynamicItems();applyCollectionToPreview();notify('Item removed. Save changes to publish.');
+ const collection=getCollection();
+ if(currentDynamicConfig()?.simpleCards&&collection.items.length===1)return notify('Keep at least one leadership card.');
+ collection.items.splice(index,1);pageEdits.__collection=collection;selectedDynamic=null;$('dynamicEditor').classList.remove('active');renderDynamicItems();applyCollectionToPreview();notify('Item removed. Save changes to publish.');
 }
 function moveDynamic(index,offset){
  const collection=getCollection(),target=index+offset;if(target<0||target>=collection.items.length)return;

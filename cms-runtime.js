@@ -49,19 +49,27 @@
             const itemSelector = collection.item || '';
             const firstItem = itemSelector ? document.querySelector(itemSelector) : null;
             if (firstItem) {
-                const template = collection.items[0] && collection.items[0].template
-                    ? collection.items[0].template
-                    : firstItem.outerHTML;
+                const incomplete = collection.items.some(function (item) {
+                    return !item || typeof item.template !== 'string' || !item.template.trim();
+                });
+                if (incomplete) {
+                    console.warn('SIW CMS: Incomplete collection; preserving original items and appending saved items.');
+                }
+                const template = firstItem.outerHTML;
                 const container = firstItem.parentElement;
                 if (container) {
-                    document.querySelectorAll(itemSelector).forEach(function (item) {
-                        item.remove();
-                    });
+                    window.SIW_CMS_COLLECTION_TEMPLATE = { html: template, parent: container };
+                    const rendered = [];
                     collection.items.forEach(function (itemData) {
+                        if (!itemData || typeof itemData !== 'object') {
+                            throw new Error('Invalid CMS collection item');
+                        }
                         const holder = document.createElement('div');
                         holder.innerHTML = itemData.template || template;
                         const item = holder.firstElementChild;
-                        if (!item) return;
+                        if (!item || !item.matches(itemSelector)) {
+                            throw new Error('Invalid CMS collection template');
+                        }
                         if (collection.config === 'about' && !item.querySelector('.team-card-position')) {
                             const position = document.createElement('div');
                             position.className = 'team-card-position';
@@ -75,23 +83,45 @@
                             try { target = document.querySelector(itemData.container); } catch (_) {}
                         }
                         if (!target) target = container;
-                        const title = item.querySelector('h1,h2,h3,h4,strong');
+                        const title = item.querySelector('h1,h2,h3,h4') || item.querySelector('strong');
                         const text = item.querySelector('.team-card-position,p,.role-title');
-                        const image = item.querySelector('img');
+                        let image = item.querySelector('img');
                         const link = item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)') || item.querySelector('a');
                         if (title && typeof itemData.title === 'string') title.textContent = itemData.title;
                         if (text && typeof itemData.text === 'string') text.textContent = itemData.text;
+                        if (!image && itemData.image && collection.config === 'products') {
+                            const visual = item.querySelector('.catalog-visual');
+                            if (visual) {
+                                visual.textContent = '';
+                                image = document.createElement('img');
+                                visual.appendChild(image);
+                            }
+                        }
                         if (image) {
                             if (typeof itemData.image === 'string' && itemData.image) image.setAttribute('src', itemData.image);
                             if (typeof itemData.alt === 'string') image.setAttribute('alt', itemData.alt);
+                        }
+                        if (incomplete && !itemData.template && collection.config === 'products') {
+                            const button = item.querySelector('.view-product');
+                            if (button) button.remove();
                         }
                         if (link) {
                             if (typeof itemData.link === 'string' && itemData.link) link.setAttribute('href', itemData.link);
                             if (typeof itemData.linkText === 'string' && itemData.linkText) link.textContent = itemData.linkText;
                         }
-                        target.appendChild(item);
+                        rendered.push({ target: target, item: item });
+                    });
+                    if (!incomplete) {
+                        document.querySelectorAll(itemSelector).forEach(function (item) {
+                            item.remove();
+                        });
+                    }
+                    rendered.forEach(function (entry) {
+                        entry.target.appendChild(entry.item);
                     });
                 }
+            } else if (collection.items.length) {
+                throw new Error('CMS collection has no original template');
             }
         }
 
@@ -134,15 +164,16 @@
         if (window.SIW_CMS_DATA && typeof window.SIW_CMS_DATA === 'object') {
             applyContent(window.SIW_CMS_DATA);
         }
+        window.SIW_CMS_READY = Promise.resolve();
         return;
     }
 
     const apiUrl = new URL('cms-api.php?action=public', document.currentScript.src);
-    fetch(apiUrl, { credentials: 'same-origin', cache: 'no-store' })
+    window.SIW_CMS_READY = fetch(apiUrl, { credentials: 'same-origin', cache: 'no-store' })
         .then(function (response) {
             if (!response.ok) throw new Error('CMS unavailable');
             return response.json();
         })
-        .then(applyContent)
-        .catch(function (error) { console.error('Unable to load CMS content:', error); });
+        .then(applyContent);
+    window.SIW_CMS_READY.catch(function (error) { console.error('Unable to load CMS content:', error); });
 })();

@@ -102,6 +102,12 @@ load that data from the API, rather than relying on the generated
 `cms-runtime-data.js` file. Opening an HTML file directly without a web server
 can only show the older static snapshot.
 
+If saved collection items have no usable templates, the site retains the
+original items and displays the saved items alongside them instead of replacing
+the originals. The editor reconstructs the collection from that preview; review
+the items before saving it. A recovered product without its own detail page
+does not inherit another product's detail button.
+
 Before deploying, back up the live `cms-data.json`, `cms-config.php`, and
 `cms-uploads` directory. Do not overwrite them with repository copies.
 By default the API uses `cms-data.json` in the website directory, which must be

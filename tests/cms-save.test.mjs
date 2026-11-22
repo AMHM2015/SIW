@@ -10,6 +10,13 @@ import vm from 'node:vm';
 
 const source = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'cms-api.php');
 
+test('CMS editor inline JavaScript parses', async () => {
+    const editor = await readFile(resolve(dirname(source), 'siw-cms.php'), 'utf8');
+    const script = editor.match(/<script>([\s\S]*?)<\/script>/);
+    assert.ok(script, 'editor script exists');
+    assert.doesNotThrow(() => new vm.Script(script[1]));
+});
+
 test('CMS preview reloads fresh HTML while preserving the page URL', async () => {
     const editor = await readFile(resolve(dirname(source), 'siw-cms.php'), 'utf8');
     const helper = editor.match(/function loadPreview\(src\)\{[\s\S]*?\n\}/);
@@ -33,6 +40,74 @@ test('CMS preview reloads fresh HTML while preserving the page URL', async () =>
     assert.notEqual(first.searchParams.get('_siw_preview'), second.searchParams.get('_siw_preview'));
     assert.equal(second.searchParams.get('other'), '1');
     assert.equal(second.hash, '#team');
+});
+
+test('collections preserve originals for incomplete data and replace them for complete data', async t => {
+    const script = await readFile(resolve(dirname(source), 'cms-runtime.js'), 'utf8');
+
+    async function render(items) {
+        const cards = [];
+        const warnings = [];
+        const container = { appendChild: card => cards.push(card) };
+        function card(title) {
+            const heading = { textContent: title };
+            const paragraph = { textContent: '' };
+            return {
+                heading, paragraph, parentElement: container, outerHTML: '<article class="catalog-card"></article>',
+                matches: selector => selector === '.catalog-card',
+                querySelector: selector => {
+                    if (selector === 'h1,h2,h3,h4') return heading;
+                    if (selector === '.team-card-position,p,.role-title') return paragraph;
+                    return null;
+                },
+                remove() { const index = cards.indexOf(this); if (index >= 0) cards.splice(index, 1); },
+            };
+        }
+        cards.push(card('Original one'), card('Original two'));
+        const document = {
+            currentScript: { src: 'https://example.test/cms-runtime.js' },
+            querySelector: selector => selector === '.catalog-card' ? cards[0] : selector === '.catalog-grid' ? container : null,
+            querySelectorAll: selector => selector === '.catalog-card' ? [...cards] : [],
+            createElement: () => ({
+                set innerHTML(value) { this.firstElementChild = value === 'invalid' ? null : card('Template'); },
+            }),
+            dispatchEvent: () => {},
+        };
+        const context = {
+            URL, Event, document,
+            window: { location: { pathname: '/products.html', protocol: 'https:' } },
+            fetch: async () => ({ ok: true, json: async () => ({
+                products: { __collection: { config: 'products', item: '.catalog-card', container: '.catalog-grid', items } },
+            }) }),
+            console: { warn: message => warnings.push(message), error: () => {} },
+        };
+        vm.runInNewContext(script, context);
+        return { cards, warnings, window: context.window, ready: context.window.SIW_CMS_READY };
+    }
+
+    await t.test('incomplete saved item is added without removing original items', async () => {
+        const result = await render([{ title: 'Saved item', text: 'Saved text', template: '' }]);
+        await result.ready;
+        assert.deepEqual(result.cards.map(item => item.heading.textContent), ['Original one', 'Original two', 'Saved item']);
+        assert.equal(result.cards[2].paragraph.textContent, 'Saved text');
+        assert.equal(result.warnings.length, 1);
+    });
+
+    await t.test('complete collections can replace or intentionally remove items', async () => {
+        const result = await render([{ title: 'Replacement', template: '<article></article>' }]);
+        await result.ready;
+        assert.deepEqual(result.cards.map(item => item.heading.textContent), ['Replacement']);
+        const empty = await render([]);
+        await empty.ready;
+        assert.equal(empty.cards.length, 0);
+        assert.ok(empty.window.SIW_CMS_COLLECTION_TEMPLATE.html.includes('catalog-card'));
+    });
+
+    await t.test('invalid templates do not remove original items', async () => {
+        const result = await render([{ title: 'Broken', template: 'invalid' }]);
+        await assert.rejects(result.ready, /Invalid CMS collection template/);
+        assert.deepEqual(result.cards.map(item => item.heading.textContent), ['Original one', 'Original two']);
+    });
 });
 
 test('CMS publishes safely from its configured data directory', async t => {

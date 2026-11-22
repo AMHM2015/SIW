@@ -3578,7 +3578,7 @@ body{
 
             <div class="catalog-grid">
                 
-        <article class="catalog-card" data-product="annuli">
+        <article class="catalog-card" data-product="optf">
             <div class="catalog-visual">
                 
         <div class="product-placeholder">
@@ -3596,6 +3596,7 @@ body{
                 <div class="catalog-actions">
                     <button type="button" class="view-product" data-product="optf">View Product</button>
                     
+                </div>
             </div>
         </article>
     
@@ -4134,8 +4135,9 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 const detailOverlay = document.querySelector(".product-detail-overlay");
 
-document.querySelectorAll(".view-product").forEach(btn => {
-    btn.addEventListener("click", () => {
+document.addEventListener("click", event => {
+    const btn = event.target.closest(".view-product");
+    if (btn) {
         const key = btn.dataset.product;
 
         document.querySelectorAll(".product-detail-panel").forEach(panel => {
@@ -4145,7 +4147,7 @@ document.querySelectorAll(".view-product").forEach(btn => {
         detailOverlay.classList.add("open");
         detailOverlay.setAttribute("aria-hidden","false");
         document.body.style.overflow = "hidden";
-    });
+    }
 });
 
 function closeProductDetail(){
@@ -4168,7 +4170,7 @@ document.addEventListener("keydown", e => {
 });
 </script>
 <script src="cms-runtime-data.js"></script>
-<script src="cms-runtime.js?v=2"></script>
+<script src="cms-runtime.js?v=3"></script>
 </body>
 
 </html>

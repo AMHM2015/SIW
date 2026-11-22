@@ -62,7 +62,7 @@ button,input,textarea{font:inherit}.login{min-height:100vh;display:grid;place-it
 <div class="notice" id="notice"></div>
 <script>
 const pages=[['home','Home','index.html'],['about','About Us','about/about.html'],['brochure','Brochure','brochure.html'],['career','Career','career.html'],['certifications','Certifications','certifications.html'],['clients','Clients','clients.html'],['news','News','news.html'],['products','Products','products.html'],['services','Services','services.html'],['team','Team','team.html']];
-let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null,dynamicImagePicker=false,pageLoadId=0;
+let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null,dynamicImagePicker=false,pageLoadId=0,previewReady=false,pageDataReady=false,collectionFallback=null;
 const dynamicConfig={
  about:{container:'.team-leadership-row',item:'.team-leader-card',singular:'Leadership card',plural:'Leadership cards',simpleCards:true},
  products:{container:'.catalog-grid',item:'.catalog-card',singular:'Product',plural:'Products'},
@@ -76,6 +76,7 @@ const dynamicConfig={
 const $=id=>document.getElementById(id);
 function notify(message){$('notice').textContent=message;$('notice').classList.add('show');setTimeout(()=>$('notice').classList.remove('show'),2200)}
 function loadPreview(src){
+ previewReady=false;$('saveBtn').disabled=true;
  const url=new URL(src,window.location.href);url.searchParams.set('_siw_preview',Date.now().toString());$('preview').src=url.href;
 }
 async function api(action,options={}){
@@ -129,27 +130,42 @@ function showApp(){
  $('mediaModal').onclick=event=>{if(event.target===$('mediaModal'))closeMedia()};
  $('addDynamicBtn').onclick=addDynamic;$('saveDynamicBtn').onclick=saveDynamic;$('deleteFieldBtn').onclick=deleteFieldEdit;
  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMedia()});
- $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=()=>{const doc=$('preview').contentDocument;if(doc)doc.addEventListener('siw-cms-content-ready',scanPreview,{once:true});scanPreview();setTimeout(scanPreview,200);setTimeout(scanPreview,700)};
+ $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=()=>{
+  const doc=$('preview').contentDocument,loadId=pageLoadId;
+  if(!pageDataReady||!doc||doc.location.href!==$('preview').src)return;
+  const ready=doc.defaultView.SIW_CMS_READY;
+  if(!ready){notify('Preview could not load CMS content. Refresh and try again.');return}
+  ready.then(()=>{
+   if(loadId!==pageLoadId||doc!==$('preview').contentDocument)return;
+   scanPreview();previewReady=true;$('saveBtn').disabled=false;
+  }).catch(error=>{
+   if(loadId===pageLoadId){console.error('Unable to prepare CMS preview:',error);notify('Preview could not load CMS content. Refresh and try again.')}
+  });
+ };
  selectPage(current);
 }
 async function selectPage(page){
  current=page;
  const loadId=++pageLoadId;
+ pageDataReady=false;previewReady=false;
  $('saveBtn').disabled=true;
  const item=pages.find(p=>p[0]===page);$('pageTitle').textContent=item[1];
  document.querySelectorAll('.page-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- loadPreview(item[2]);
- try{const data=await api('public');if(loadId!==pageLoadId)return;allData=data;$('saveBtn').disabled=false}
+ try{const data=await api('public');if(loadId!==pageLoadId)return;allData=data}
  catch(error){if(loadId===pageLoadId)notify(error.message);return}
  pageEdits=JSON.parse(JSON.stringify((allData&&allData[page])||{}));
+ pageDataReady=true;collectionFallback=null;
  selectedDynamic=null;$('dynamicEditor').classList.remove('active');
  renderDynamicItems();
- scanPreview();
+ loadPreview(item[2]);
 }
 function scanPreview(){
  let doc;try{doc=$('preview').contentDocument}catch(_){return}if(!doc)return;
  const page=pages.find(item=>item[0]===current);
  if(!page||doc.location.pathname.split('/').pop()!==page[2].split('/').pop())return;
+ const config=currentDynamicConfig(),sample=config&&doc.querySelector(config.item),sourceTemplate=doc.defaultView.SIW_CMS_COLLECTION_TEMPLATE;
+ if(sample)collectionFallback=itemFields(sample);
+ else if(config&&sourceTemplate)collectionFallback={template:sourceTemplate.html,container:stableSelector(sourceTemplate.parent)};
  ensurePreviewHighlightStyles(doc);
  ensureCollectionFromPreview();
  applyCollectionToPreview();
@@ -303,7 +319,7 @@ async function savePage(){
   allData[page]={...elements,__seo:seo};
   if(current===page){pageEdits.__seo=seo;loadPreview($('preview').src)}
   notify('Changes saved');
- }catch(error){notify(error.message)}finally{$('saveBtn').disabled=false;document.querySelectorAll('.page-btn[data-page]').forEach(button=>button.disabled=false)}
+ }catch(error){notify(error.message)}finally{$('saveBtn').disabled=!previewReady;document.querySelectorAll('.page-btn[data-page]').forEach(button=>button.disabled=false)}
 }
 async function resetPage(){
  if(!confirm('Reset this page to its original website content?'))return;
@@ -313,7 +329,7 @@ function escapeHtml(value){return String(value).replace(/[&<>"']/g,m=>({'&':'&am
 function getCollection(){const value=pageEdits.__collection;return value&&Array.isArray(value.items)?value:{config:null,items:[]}}
 function currentDynamicConfig(){return dynamicConfig[current]||null}
 function itemFields(el){
- const heading=el.querySelector('h1,h2,h3,h4,strong');
+ const heading=el.querySelector('h1,h2,h3,h4')||el.querySelector('strong');
  const text=el.querySelector('.team-card-position,p,.role-title');
  const image=el.querySelector('img');
  const link=el.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)')||el.querySelector('a');
@@ -334,12 +350,14 @@ function renderDynamicItems(){
 }
 function ensureCollectionFromPreview(){
  const config=currentDynamicConfig(),collection=getCollection();
- if(config&&collection.config===current&&!(config.simpleCards&&!collection.items.length))return collection;
+ const incomplete=collection.items.some(item=>!item||typeof item.template!=='string'||!item.template.trim());
+ if(config&&collection.config===current&&!incomplete&&!(config.simpleCards&&!collection.items.length))return collection;
  const doc=$('preview').contentDocument;if(!doc)return {config:null,items:[]};
  if(!config)return {config:null,items:[]};
  const nodes=Array.from(doc.querySelectorAll(config.item)).filter(el=>!el.closest('header,footer,nav,script,style'));
  const items=nodes.map(itemFields);
  pageEdits.__collection={config:current,container:config.container,item:config.item,items};
+ if(incomplete)notify('Incomplete saved items recovered alongside the original items.');
  return pageEdits.__collection;
 }
 function applyCollectionToPreview(){
@@ -365,7 +383,7 @@ function applyCollectionToPreview(){
    position.className='team-card-position';
    item.prepend(position);
   }
-  const title=item.querySelector('h1,h2,h3,h4,strong');
+  const title=item.querySelector('h1,h2,h3,h4')||item.querySelector('strong');
   const text=item.querySelector('.team-card-position,p,.role-title');
   const image=item.querySelector('img');
   const link=item.querySelector('.news-card-actions a, .service-link, a[href]:not(.news-card-image):not(.service-image)')||item.querySelector('a');
@@ -383,8 +401,16 @@ function applyCollectionToPreview(){
 }
 function addDynamic(){
  const config=currentDynamicConfig();if(!config)return;
- const collection=ensureCollectionFromPreview(),template=collection.items[0]?collection.items[0].template:null;
- const item={title:'New '+config.singular.toLowerCase(),text:config.simpleCards?'':'Add description here.',image:'',alt:'',link:'#',linkText:'View',container:collection.items[0]?.container||'',template:template||''};
+ const collection=ensureCollectionFromPreview(),reference=collection.items[0]||collectionFallback;
+ if(!reference||!reference.template)return notify('Cannot add an item: no page template is available.');
+ let template=reference.template;
+ if(current==='products'){
+  const doc=$('preview').contentDocument,holder=doc.createElement('div');holder.innerHTML=template;
+  const button=holder.querySelector('.view-product');
+  if(button){const link=doc.createElement('a');link.href='#';link.textContent='View';button.replaceWith(link)}
+  template=holder.firstElementChild.outerHTML;
+ }
+ const item={title:'New '+config.singular.toLowerCase(),text:config.simpleCards?'':'Add description here.',image:'',alt:'',link:'#',linkText:'View',container:reference.container||'',template};
  collection.items.push(item);pageEdits.__collection=collection;selectedDynamic=collection.items.length-1;renderDynamicItems();applyCollectionToPreview();highlightDynamicPreview(selectedDynamic);editDynamic(selectedDynamic);notify(config.singular+' added. Save changes to publish.');
 }
 function editDynamic(index){

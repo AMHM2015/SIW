@@ -62,7 +62,7 @@ button,input,textarea{font:inherit}.login{min-height:100vh;display:grid;place-it
 <div class="notice" id="notice"></div>
 <script>
 const pages=[['home','Home','index.html'],['about','About Us','about/about.html'],['brochure','Brochure','brochure.html'],['career','Career','career.html'],['certifications','Certifications','certifications.html'],['clients','Clients','clients.html'],['news','News','news.html'],['products','Products','products.html'],['services','Services','services.html'],['team','Team','team.html']];
-let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null,dynamicImagePicker=false;
+let current='home',allData={},pageEdits={},selected=null,elementItems=[],selectedDynamic=null,dynamicImagePicker=false,pageLoadId=0;
 const dynamicConfig={
  about:{container:'.team-leadership-row',item:'.team-leader-card',singular:'Leadership card',plural:'Leadership cards',simpleCards:true},
  products:{container:'.catalog-grid',item:'.catalog-card',singular:'Product',plural:'Products'},
@@ -126,15 +126,18 @@ function showApp(){
  $('mediaModal').onclick=event=>{if(event.target===$('mediaModal'))closeMedia()};
  $('addDynamicBtn').onclick=addDynamic;$('saveDynamicBtn').onclick=saveDynamic;$('deleteFieldBtn').onclick=deleteFieldEdit;
  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMedia()});
- $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=()=>{scanPreview();setTimeout(scanPreview,200);setTimeout(scanPreview,700)};
+ $('saveBtn').onclick=savePage;$('resetBtn').onclick=resetPage;$('applyBtn').onclick=applyEdit;$('preview').onload=()=>{const doc=$('preview').contentDocument;if(doc)doc.addEventListener('siw-cms-content-ready',scanPreview,{once:true});scanPreview();setTimeout(scanPreview,200);setTimeout(scanPreview,700)};
  selectPage(current);
 }
 async function selectPage(page){
  current=page;
+ const loadId=++pageLoadId;
+ $('saveBtn').disabled=true;
  const item=pages.find(p=>p[0]===page);$('pageTitle').textContent=item[1];
  document.querySelectorAll('.page-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
  $('preview').src=item[2];
- try{allData=await api('public')}catch(error){notify(error.message)}
+ try{const data=await api('public');if(loadId!==pageLoadId)return;allData=data;$('saveBtn').disabled=false}
+ catch(error){if(loadId===pageLoadId)notify(error.message);return}
  pageEdits=JSON.parse(JSON.stringify((allData&&allData[page])||{}));
  selectedDynamic=null;$('dynamicEditor').classList.remove('active');
  renderDynamicItems();
@@ -289,17 +292,19 @@ function applyEdit(){
  notify('Applied in preview. Save to publish.');
 }
 async function savePage(){
+ const page=current,elements=JSON.parse(JSON.stringify(pageEdits)),seo={title:$('seoTitle').value,description:$('seoDescription').value};
+ $('saveBtn').disabled=true;
+ document.querySelectorAll('.page-btn[data-page]').forEach(button=>button.disabled=true);
  try{
-  await api('save-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current,elements:pageEdits})});
-  await api('save-seo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current,title:$('seoTitle').value,description:$('seoDescription').value})});
-  allData[current]=pageEdits;
-  $('preview').src=$('preview').src;
+  await api('save-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page,elements,seo})});
+  allData[page]={...elements,__seo:seo};
+  if(current===page){pageEdits.__seo=seo;$('preview').src=$('preview').src}
   notify('Changes saved');
- }catch(error){notify(error.message)}
+ }catch(error){notify(error.message)}finally{$('saveBtn').disabled=false;document.querySelectorAll('.page-btn[data-page]').forEach(button=>button.disabled=false)}
 }
 async function resetPage(){
  if(!confirm('Reset this page to its original website content?'))return;
- try{await api('reset-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current})});pageEdits={};$('preview').src=$('preview').src;notify('Page reset')}catch(error){notify(error.message)}
+ try{await api('reset-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current})});delete allData[current];pageEdits={};$('preview').src=$('preview').src;notify('Page reset')}catch(error){notify(error.message)}
 }
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function getCollection(){const value=pageEdits.__collection;return value&&Array.isArray(value.items)?value:{config:null,items:[]}}

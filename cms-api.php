@@ -6,7 +6,9 @@ header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
 $root = __DIR__;
-$dataFile = $root . DIRECTORY_SEPARATOR . 'cms-data.json';
+$configuredDataDir = getenv('SIW_CMS_DATA_DIR');
+$dataDir = $configuredDataDir !== false && $configuredDataDir !== '' ? $configuredDataDir : $root;
+$dataFile = rtrim($dataDir, '/\\') . DIRECTORY_SEPARATOR . 'cms-data.json';
 $configFile = $root . DIRECTORY_SEPARATOR . 'cms-config.php';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $action = $_GET['action'] ?? '';
@@ -18,15 +20,69 @@ $readJson = static function (): array {
     return is_array($value) ? $value : [];
 };
 
-$writeRuntimeData = static function (array $data) use ($root): void {
-    $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    $script = "window.SIW_CMS_DATA = " . ($json ?: '{}') . ";\n";
-    @file_put_contents($root . DIRECTORY_SEPARATOR . 'cms-runtime-data.js', $script, LOCK_EX);
+$readData = static function () use ($dataFile, $configuredDataDir): array {
+    if (!is_file($dataFile)) {
+        if ($configuredDataDir !== false && $configuredDataDir !== '') {
+            throw new RuntimeException('The configured CMS data file does not exist.');
+        }
+        return [];
+    }
+    $contents = @file_get_contents($dataFile);
+    if ($contents === false) {
+        throw new RuntimeException('Could not read the CMS data file.');
+    }
+    $data = json_decode($contents, true);
+    if (!is_array($data) || json_last_error() !== JSON_ERROR_NONE) {
+        throw new RuntimeException('The CMS data file contains invalid JSON.');
+    }
+    return $data;
+};
+
+$updateData = static function (callable $update) use ($dataDir, $dataFile, $readData): void {
+    if (!is_dir($dataDir) || !is_writable($dataDir)) {
+        throw new RuntimeException('The CMS data directory is not writable.');
+    }
+    $lock = @fopen(rtrim($dataDir, '/\\') . DIRECTORY_SEPARATOR . 'cms.lock', 'c');
+    if ($lock === false) {
+        throw new RuntimeException('Could not open the CMS data lock.');
+    }
+    $temporary = false;
+    try {
+        if (!flock($lock, LOCK_EX)) {
+            throw new RuntimeException('Could not lock CMS data.');
+        }
+        $data = $readData();
+        $update($data);
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ($json === false) {
+            throw new RuntimeException('Could not encode CMS data: ' . json_last_error_msg());
+        }
+        $temporary = @tempnam($dataDir, 'siw-');
+        if ($temporary === false || realpath(dirname($temporary)) !== realpath($dataDir)) {
+            throw new RuntimeException('Could not create a temporary CMS data file.');
+        }
+        if (@file_put_contents($temporary, $json) !== strlen($json) || !@rename($temporary, $dataFile)) {
+            throw new RuntimeException('Could not save the CMS data file.');
+        }
+        $temporary = false;
+    } finally {
+        if ($temporary !== false && is_file($temporary) && !@unlink($temporary)) {
+            error_log('SIW CMS: Could not remove temporary CMS data file.');
+        }
+        flock($lock, LOCK_UN);
+        fclose($lock);
+    }
 };
 
 if ($action === 'public') {
-    $data = json_decode((string) @file_get_contents($dataFile), true);
-    echo json_encode(is_array($data) ? $data : [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    header('Cache-Control: no-store');
+    try {
+        echo json_encode($readData(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } catch (RuntimeException $error) {
+        error_log('SIW CMS: ' . $error->getMessage());
+        http_response_code(500);
+        echo json_encode(['error' => 'Unable to load CMS data']);
+    }
     exit;
 }
 
@@ -202,16 +258,25 @@ if ($action === 'save-page' && $method === 'POST') {
         echo json_encode(['error' => 'Invalid page data']);
         exit;
     }
-    $data = json_decode((string) @file_get_contents($dataFile), true);
-    if (!is_array($data)) $data = [];
-    $data[$page] = $elements;
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    if (!@file_put_contents($dataFile, (string) $json, LOCK_EX)) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Unable to save CMS data']);
+    $seo = $input['seo'] ?? null;
+    if ($seo !== null && (!is_array($seo) || !is_string($seo['title'] ?? null) || !is_string($seo['description'] ?? null))) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid SEO data']);
         exit;
     }
-    $writeRuntimeData($data);
+    try {
+        $updateData(static function (array &$data) use ($page, $elements, $seo): void {
+            if ($seo !== null) {
+                $elements['__seo'] = ['title' => $seo['title'], 'description' => $seo['description']];
+            }
+            $data[$page] = $elements;
+        });
+    } catch (RuntimeException $error) {
+        error_log('SIW CMS: ' . $error->getMessage());
+        http_response_code(500);
+        echo json_encode(['error' => 'Unable to save CMS data. Check the server data directory and PHP error log.']);
+        exit;
+    }
     echo json_encode(['ok' => true]);
     exit;
 }
@@ -224,20 +289,20 @@ if ($action === 'save-seo' && $method === 'POST') {
         echo json_encode(['error' => 'Invalid page']);
         exit;
     }
-    $data = json_decode((string) @file_get_contents($dataFile), true);
-    if (!is_array($data)) $data = [];
-    if (!isset($data[$page]) || !is_array($data[$page])) $data[$page] = [];
-    $data[$page]['__seo'] = [
-        'title' => (string) ($input['title'] ?? ''),
-        'description' => (string) ($input['description'] ?? ''),
-    ];
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    if (!@file_put_contents($dataFile, $json, LOCK_EX)) {
+    try {
+        $updateData(static function (array &$data) use ($page, $input): void {
+            if (!isset($data[$page]) || !is_array($data[$page])) $data[$page] = [];
+            $data[$page]['__seo'] = [
+                'title' => (string) ($input['title'] ?? ''),
+                'description' => (string) ($input['description'] ?? ''),
+            ];
+        });
+    } catch (RuntimeException $error) {
+        error_log('SIW CMS: ' . $error->getMessage());
         http_response_code(500);
-        echo json_encode(['error' => 'Unable to save SEO data']);
+        echo json_encode(['error' => 'Unable to save SEO data. Check the server data directory and PHP error log.']);
         exit;
     }
-    $writeRuntimeData($data);
     echo json_encode(['ok' => true]);
     exit;
 }
@@ -245,16 +310,16 @@ if ($action === 'save-seo' && $method === 'POST') {
 if ($action === 'reset-page' && $method === 'POST') {
     $input = $readJson();
     $page = trim((string) ($input['page'] ?? ''));
-    $data = json_decode((string) @file_get_contents($dataFile), true);
-    if (!is_array($data)) $data = [];
-    unset($data[$page]);
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    if (!@file_put_contents($dataFile, $json, LOCK_EX)) {
+    try {
+        $updateData(static function (array &$data) use ($page): void {
+            unset($data[$page]);
+        });
+    } catch (RuntimeException $error) {
+        error_log('SIW CMS: ' . $error->getMessage());
         http_response_code(500);
-        echo json_encode(['error' => 'Unable to reset page']);
+        echo json_encode(['error' => 'Unable to reset page. Check the server data directory and PHP error log.']);
         exit;
     }
-    $writeRuntimeData($data);
     echo json_encode(['ok' => true]);
     exit;
 }

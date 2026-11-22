@@ -94,3 +94,26 @@ Use it only if you intend to remove all saved edits from that page. Confirm the 
 - **You see a different screen with a “Preview Data” button or a message that backend saving can be connected later:** that is a demonstration form, not the publishing editor. Return to the SIW CMS admin page or contact support.
 
 When finished, choose **Sign out** on the left.
+
+## Deployment and published content
+
+The CMS publishes from `cms-data.json` through `cms-api.php`. The public pages
+load that data from the API, rather than relying on the generated
+`cms-runtime-data.js` file. Opening an HTML file directly without a web server
+can only show the older static snapshot.
+
+Before deploying, back up the live `cms-data.json`, `cms-config.php`, and
+`cms-uploads` directory. Do not overwrite them with repository copies.
+By default the API uses `cms-data.json` in the website directory, which must be
+writable by the PHP process. For deployments that replace the website
+directory, configure the PHP environment variable `SIW_CMS_DATA_DIR` to an
+existing persistent directory outside the deployment tree, copy the existing
+live `cms-data.json` into it, and give the PHP process permission to read and
+write the directory and its contents. The CMS creates a lock file and
+temporary files there. Keep this directory and `cms-uploads` in backups.
+
+Deploy `cms-api.php`, `cms-runtime.js`, `siw-cms.php`, and
+`about/about.html` together. After deployment, sign in, save a test change,
+and verify it on the public page. If saving fails, check the PHP error log and
+the data directory permissions. `cms-config.php` remains the authentication
+configuration and must be preserved.

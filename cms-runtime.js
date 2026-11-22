@@ -127,18 +127,22 @@
                 else host.appendChild(wrapper);
             });
         }
+        document.dispatchEvent(new Event('siw-cms-content-ready'));
     };
 
-    if (window.SIW_CMS_DATA && typeof window.SIW_CMS_DATA === 'object') {
-        applyContent(window.SIW_CMS_DATA);
+    if (window.location.protocol === 'file:') {
+        if (window.SIW_CMS_DATA && typeof window.SIW_CMS_DATA === 'object') {
+            applyContent(window.SIW_CMS_DATA);
+        }
         return;
     }
 
-    fetch('cms-api.php?action=public&v=' + Date.now(), { credentials: 'same-origin', cache: 'no-store' })
+    const apiUrl = new URL('cms-api.php?action=public', document.currentScript.src);
+    fetch(apiUrl, { credentials: 'same-origin', cache: 'no-store' })
         .then(function (response) {
             if (!response.ok) throw new Error('CMS unavailable');
             return response.json();
         })
         .then(applyContent)
-        .catch(function () {});
+        .catch(function (error) { console.error('Unable to load CMS content:', error); });
 })();

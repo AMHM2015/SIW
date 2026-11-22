@@ -112,8 +112,10 @@ live `cms-data.json` into it, and give the PHP process permission to read and
 write the directory and its contents. The CMS creates a lock file and
 temporary files there. Keep this directory and `cms-uploads` in backups.
 
-Deploy `cms-api.php`, `cms-runtime.js`, `siw-cms.php`, and
-`about/about.html` together. After deployment, sign in, save a test change,
-and verify it on the public page. If saving fails, check the PHP error log and
-the data directory permissions. `cms-config.php` remains the authentication
-configuration and must be preserved.
+Deploy `cms-api.php`, `cms-runtime.js`, `siw-cms.php`, and the updated HTML
+pages together. The HTML pages use a versioned runtime URL to avoid an old
+cached script. Purge any server or CDN HTML cache after deployment; browsers
+with cached HTML may also need a hard refresh. After deployment, sign in, save
+a test change, and verify it on the public page. If saving fails, check the PHP
+error log and the data directory permissions. `cms-config.php` remains the
+authentication configuration and must be preserved.

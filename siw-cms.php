@@ -75,6 +75,9 @@ const dynamicConfig={
 };
 const $=id=>document.getElementById(id);
 function notify(message){$('notice').textContent=message;$('notice').classList.add('show');setTimeout(()=>$('notice').classList.remove('show'),2200)}
+function loadPreview(src){
+ const url=new URL(src,window.location.href);url.searchParams.set('_siw_preview',Date.now().toString());$('preview').src=url.href;
+}
 async function api(action,options={}){
  options.credentials='same-origin';
  options.cache='no-store';
@@ -135,7 +138,7 @@ async function selectPage(page){
  $('saveBtn').disabled=true;
  const item=pages.find(p=>p[0]===page);$('pageTitle').textContent=item[1];
  document.querySelectorAll('.page-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- $('preview').src=item[2];
+ loadPreview(item[2]);
  try{const data=await api('public');if(loadId!==pageLoadId)return;allData=data;$('saveBtn').disabled=false}
  catch(error){if(loadId===pageLoadId)notify(error.message);return}
  pageEdits=JSON.parse(JSON.stringify((allData&&allData[page])||{}));
@@ -298,13 +301,13 @@ async function savePage(){
  try{
   await api('save-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page,elements,seo})});
   allData[page]={...elements,__seo:seo};
-  if(current===page){pageEdits.__seo=seo;$('preview').src=$('preview').src}
+  if(current===page){pageEdits.__seo=seo;loadPreview($('preview').src)}
   notify('Changes saved');
  }catch(error){notify(error.message)}finally{$('saveBtn').disabled=false;document.querySelectorAll('.page-btn[data-page]').forEach(button=>button.disabled=false)}
 }
 async function resetPage(){
  if(!confirm('Reset this page to its original website content?'))return;
- try{await api('reset-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current})});delete allData[current];pageEdits={};$('preview').src=$('preview').src;notify('Page reset')}catch(error){notify(error.message)}
+ try{await api('reset-page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:current})});delete allData[current];pageEdits={};loadPreview($('preview').src);notify('Page reset')}catch(error){notify(error.message)}
 }
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function getCollection(){const value=pageEdits.__collection;return value&&Array.isArray(value.items)?value:{config:null,items:[]}}
@@ -423,7 +426,7 @@ function moveDynamic(index,offset){
 }
 function deleteFieldEdit(){
  if(!selected)return notify('Select a field first');
- const selector=stableSelector(selected);delete pageEdits[selector];$('preview').src=$('preview').src;notify('Field edit removed. Save changes to publish.');
+ const selector=stableSelector(selected);delete pageEdits[selector];loadPreview($('preview').src);notify('Field edit removed. Save changes to publish.');
 }
 function publicMediaUrl(relativeUrl){return new URL(relativeUrl,window.location.href).href}
 function openMedia(forDynamicImage=false){ dynamicImagePicker=forDynamicImage;$('mediaModal').classList.add('active');$('mediaModal').setAttribute('aria-hidden','false');loadMedia()}

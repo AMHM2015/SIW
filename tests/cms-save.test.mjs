@@ -10,6 +10,31 @@ import vm from 'node:vm';
 
 const source = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'cms-api.php');
 
+test('CMS preview reloads fresh HTML while preserving the page URL', async () => {
+    const editor = await readFile(resolve(dirname(source), 'siw-cms.php'), 'utf8');
+    const helper = editor.match(/function loadPreview\(src\)\{[\s\S]*?\n\}/);
+    assert.ok(helper, 'preview loader exists');
+    const preview = { src: '' };
+    let now = 100;
+    const context = {
+        URL,
+        Date: { now: () => now++ },
+        window: { location: { href: 'https://example.test/website/siw-cms.php' } },
+        $: () => preview,
+    };
+    vm.runInNewContext(helper[0], context);
+    context.loadPreview('about/about.html?other=1#team');
+    const first = new URL(preview.src);
+    assert.equal(first.pathname, '/website/about/about.html');
+    assert.equal(first.searchParams.get('other'), '1');
+    assert.equal(first.hash, '#team');
+    context.loadPreview(preview.src);
+    const second = new URL(preview.src);
+    assert.notEqual(first.searchParams.get('_siw_preview'), second.searchParams.get('_siw_preview'));
+    assert.equal(second.searchParams.get('other'), '1');
+    assert.equal(second.hash, '#team');
+});
+
 test('CMS publishes safely from its configured data directory', async t => {
     const root = await mkdtemp(join(tmpdir(), 'siw-cms-test-'));
     const dataDir = join(root, 'data');

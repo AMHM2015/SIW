@@ -97,6 +97,9 @@ When finished, choose **Sign out** on the left.
 
 ## Deployment and published content
 
+The CMS supports PHP 7.0 or later. PHP 7.0 is unsupported; upgrade the server
+to a supported PHP release when possible.
+
 The CMS publishes from `cms-data.json` through `cms-api.php`. The public pages
 load that data from the API, rather than relying on the generated
 `cms-runtime-data.js` file. Opening an HTML file directly without a web server

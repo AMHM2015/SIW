@@ -38,7 +38,7 @@ $readData = static function () use ($dataFile, $configuredDataDir): array {
     return $data;
 };
 
-$updateData = static function (callable $update) use ($dataDir, $dataFile, $readData): void {
+$updateData = static function (callable $update) use ($dataDir, $dataFile, $readData) {
     if (!is_dir($dataDir) || !is_writable($dataDir)) {
         throw new RuntimeException('The CMS data directory is not writable.');
     }
@@ -265,7 +265,7 @@ if ($action === 'save-page' && $method === 'POST') {
         exit;
     }
     try {
-        $updateData(static function (array &$data) use ($page, $elements, $seo): void {
+        $updateData(static function (array &$data) use ($page, $elements, $seo) {
             if ($seo !== null) {
                 $elements['__seo'] = ['title' => $seo['title'], 'description' => $seo['description']];
             }
@@ -290,7 +290,7 @@ if ($action === 'save-seo' && $method === 'POST') {
         exit;
     }
     try {
-        $updateData(static function (array &$data) use ($page, $input): void {
+        $updateData(static function (array &$data) use ($page, $input) {
             if (!isset($data[$page]) || !is_array($data[$page])) $data[$page] = [];
             $data[$page]['__seo'] = [
                 'title' => (string) ($input['title'] ?? ''),
@@ -311,7 +311,7 @@ if ($action === 'reset-page' && $method === 'POST') {
     $input = $readJson();
     $page = trim((string) ($input['page'] ?? ''));
     try {
-        $updateData(static function (array &$data) use ($page): void {
+        $updateData(static function (array &$data) use ($page) {
             unset($data[$page]);
         });
     } catch (RuntimeException $error) {

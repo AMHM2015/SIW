@@ -83,7 +83,8 @@ async function api(action,options={}){
  options.credentials='same-origin';
  options.cache='no-store';
  const response=await fetch('cms-api.php?action='+encodeURIComponent(action),options);
- let data={};try{data=await response.json()}catch(_){}
+ let data;
+ try{data=await response.json()}catch(_){throw new Error('Invalid response from CMS server. Check the PHP error log.')}
  if(!response.ok)throw new Error(data.error||'Request failed');
  return data;
 }

@@ -17,6 +17,21 @@ test('CMS editor inline JavaScript parses', async () => {
     assert.doesNotThrow(() => new vm.Script(script[1]));
 });
 
+test('CMS editor reports malformed server responses instead of claiming success', async () => {
+    const editor = await readFile(resolve(dirname(source), 'siw-cms.php'), 'utf8');
+    const helper = editor.match(/async function api\(action,options=\{\}\)\{[\s\S]*?\n\}/);
+    assert.ok(helper, 'API helper exists');
+    const context = {
+        fetch: async () => ({ ok: true, json: async () => { throw new SyntaxError('invalid JSON'); } }),
+    };
+    vm.runInNewContext(helper[0], context);
+    await assert.rejects(context.api('save-page'), /Invalid response from CMS server/);
+    context.fetch = async () => ({ ok: false, json: async () => ({ error: 'Unable to save CMS data' }) });
+    await assert.rejects(context.api('save-page'), /Unable to save CMS data/);
+    context.fetch = async () => ({ ok: true, json: async () => ({ ok: true }) });
+    assert.equal((await context.api('save-page')).ok, true);
+});
+
 test('CMS preview reloads fresh HTML while preserving the page URL', async () => {
     const editor = await readFile(resolve(dirname(source), 'siw-cms.php'), 'utf8');
     const helper = editor.match(/function loadPreview\(src\)\{[\s\S]*?\n\}/);
